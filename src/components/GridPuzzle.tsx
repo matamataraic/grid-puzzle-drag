@@ -321,7 +321,7 @@ export const GridPuzzle = () => {
           ))}
         </AnimatePresence>
 
-        <div className="fixed bottom-0 left-0 right-0 flex flex-col items-center gap-1 pb-4 z-20">
+        <div className="fixed bottom-0 left-0 right-0 flex flex-col items-center gap-33 pb-4 z-20">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -331,7 +331,7 @@ export const GridPuzzle = () => {
             Clear
           </motion.button>
           
-          <div className="flex items-center gap- 10 mt-5">
+          <div className="flex items-center gap-3 mt-5">
             <div className="flex gap-2">
               <span className="text-sm font-medium">S0:</span>
               <span className="text-sm">{imageCounts.S0}</span>
