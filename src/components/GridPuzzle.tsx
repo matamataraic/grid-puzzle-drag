@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+ralimport { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -268,7 +268,7 @@ export const GridPuzzle = () => {
     position: 'fixed',
     top: '165px',
     borderWidth: '20px', // Controls outer border width
-    borderColor: '#282828'   // Sets the outer border color to white
+    borderColor: 'neutral-50'   // Sets the outer border color to white
             }}
           >
             {gridTiles.map((row, y) =>
