@@ -1,4 +1,4 @@
-ralimport { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -260,15 +260,15 @@ export const GridPuzzle = () => {
         {isGridGenerated && (
           <div
             ref={gridRef}
-            className="relative border border-white bg-black z-10"
+            className="relative border border-white bg-white z-10"
             style={{
              display: 'grid',
     gridTemplateColumns: `repeat(${horizontal}, 50px)`,
     gridTemplateRows: `repeat(${vertical}, 50px)`,
     position: 'fixed',
     top: '165px',
-    borderWidth: '40px', // Controls outer border width
-    borderColor: 'white'   // Sets the outer border color to white
+    borderWidth: '20px', // Controls outer border width
+    borderColor: '#282828'   // Sets the outer border color to white
             }}
           >
             {gridTiles.map((row, y) =>
@@ -276,7 +276,7 @@ export const GridPuzzle = () => {
                 <div
                   key={`${y}-${x}`}
                   className="border border-white w-[50px] h-[50px]"
-                  style={{ backgroundColor: 'black' }}
+                  style={{ backgroundColor: neutral-50 }}
                   onDoubleClick={() => handleGridDoubleClick(y, x)}
                 >
                   {tile && (
