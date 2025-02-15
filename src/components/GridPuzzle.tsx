@@ -315,7 +315,7 @@ export const GridPuzzle = () => {
               whileHover={{ scale: 1.1 }}
               whileDrag={{ zIndex: 15 }}
               initial={{ opacity: 1, scale: 1 }}
-              animate={{ opacity: 0.05, scale: 1 }}
+              animate={{ opacity: 0.25, scale: 1 }}
               transition={{ duration: 0 }}
             />
           ))}
