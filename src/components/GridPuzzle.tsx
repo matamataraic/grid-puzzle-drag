@@ -228,7 +228,7 @@ export const GridPuzzle = () => {
       <div className="fixed bottom-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
 
       <div className="flex flex-col items-center pt-[45px] relative">
-        <div className="flex items-center gap-1 fixed top-[45px] z-20">
+        <div className="flex items-center gap-50 fixed top-[45px] z-20">
           <label className="text-sm font-medium">H</label>
           <input
             type="text"
