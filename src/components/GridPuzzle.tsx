@@ -228,7 +228,7 @@ export const GridPuzzle = () => {
       <div className="fixed bottom-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
 
       <div className="flex flex-col items-center pt-[45px] relative">
-        <div className="flex items-center gap-20 fixed top-[45px] z-20">
+        <div className="flex items-center gap-4 fixed top-[45px] z-20">
           <label className="text-sm font-medium">H</label>
           <input
             type="text"
@@ -331,7 +331,7 @@ export const GridPuzzle = () => {
             Clear
           </motion.button>
           
-          <div className="flex items-center gap-3 mt-5">
+          <div className="flex items-center gap-10 mt-5">
             <div className="flex gap-2">
               <span className="text-sm font-medium">S0:</span>
               <span className="text-sm">{imageCounts.S0}</span>
