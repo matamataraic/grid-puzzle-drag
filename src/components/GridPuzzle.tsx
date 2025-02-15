@@ -268,7 +268,7 @@ export const GridPuzzle = () => {
     position: 'fixed',
     top: '165px',
     borderWidth: '20px', // Controls outer border width
-    borderColor: 'white'  // Sets the outer border color to white
+    borderColor: '#282828'   // Sets the outer border color to white
             }}
           >
             {gridTiles.map((row, y) =>
