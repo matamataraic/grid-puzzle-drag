@@ -76,7 +76,7 @@ export const GridPuzzle = () => {
     const newTiles: TilePosition[] = [];
     // Generate at least 50 copies of each image
     for (let imageIndex = 0; imageIndex < loadedImages.length; imageIndex++) {
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 75; i++) {
         newTiles.push({
           id: `tile-${imageIndex}-${i}`,
           x: Math.random() * (window.innerWidth - 100),
@@ -225,7 +225,7 @@ export const GridPuzzle = () => {
       <div className="fixed top-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
 
       {/* Bottom clear strip */}
-      <div className="fixed bottom-0 left-0 right-0 h-[160px] bg-neutral-50 z-[5]" />
+      <div className="fixed bottom-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
 
       <div className="flex flex-col items-center pt-[45px] relative">
         <div className="flex items-center gap-4 fixed top-[45px] z-20">
