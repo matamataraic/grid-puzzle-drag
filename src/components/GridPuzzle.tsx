@@ -307,7 +307,7 @@ export const GridPuzzle = () => {
                 left: tile.x,
                 top: tile.y,
                 rotate: tile.rotation,
-                opacity: 0.25,
+                opacity: 0,
                 zIndex: 1
               }}
               drag
