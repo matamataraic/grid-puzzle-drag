@@ -276,7 +276,7 @@ export const GridPuzzle = () => {
                 <div
                   key={`${y}-${x}`}
                   className="border border-white w-[50px] h-[50px]"
-                  style={{ backgroundColor: 'white' }}
+                  style={{ backgroundColor: 'black' }}
                   onDoubleClick={() => handleGridDoubleClick(y, x)}
                 >
                   {tile && (
