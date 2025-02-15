@@ -267,7 +267,7 @@ export const GridPuzzle = () => {
     gridTemplateRows: `repeat(${vertical}, 50px)`,
     position: 'fixed',
     top: '165px',
-    borderWidth: '10px', // Controls outer border width
+    borderWidth: '30px', // Controls outer border width
     borderColor: 'white'  // Sets the outer border color to white
             }}
           >
