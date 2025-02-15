@@ -39,14 +39,17 @@ export const GridPuzzle = () => {
 
   const generateRandomTiles = (loadedImages: string[]) => {
     const newTiles: TilePosition[] = [];
-    for (let i = 0; i < 15; i++) {
-      newTiles.push({
-        id: `tile-${i}`,
-        x: Math.random() * (window.innerWidth - 100),
-        y: Math.random() * (window.innerHeight - 100),
-        rotation: Math.floor(Math.random() * 4) * 90,
-        imageIndex: Math.floor(Math.random() * loadedImages.length),
-      });
+    // Generate at least 20 copies of each image
+    for (let imageIndex = 0; imageIndex < loadedImages.length; imageIndex++) {
+      for (let i = 0; i < 20; i++) {
+        newTiles.push({
+          id: `tile-${imageIndex}-${i}`,
+          x: Math.random() * (window.innerWidth - 100),
+          y: Math.random() * (window.innerHeight - 200), // Adjusted to account for clear button
+          rotation: Math.floor(Math.random() * 4) * 90,
+          imageIndex,
+        });
+      }
     }
     setTiles(newTiles);
   };
@@ -65,7 +68,6 @@ export const GridPuzzle = () => {
     event: any,
     info: any,
     tileId: string,
-    sourceIndex?: number
   ) => {
     if (!gridRef.current) return;
 
@@ -76,19 +78,50 @@ export const GridPuzzle = () => {
     const cellX = Math.floor(x / 50);
     const cellY = Math.floor(y / 50);
 
+    // Remove the dragged tile from tiles array
+    const updatedTiles = tiles.filter(t => t.id !== tileId);
+    const draggedTile = tiles.find(t => t.id === tileId);
+
     if (
+      draggedTile &&
       cellX >= 0 &&
       cellX < parseInt(horizontal) &&
       cellY >= 0 &&
       cellY < parseInt(vertical)
     ) {
       const updatedGrid = [...gridTiles];
-      const tile = tiles.find((t) => t.id === tileId);
-      if (tile) {
-        if (updatedGrid[cellY][cellX] === null) {
-          updatedGrid[cellY][cellX] = { ...tile };
-          setGridTiles(updatedGrid);
-        }
+      if (updatedGrid[cellY][cellX] === null) {
+        updatedGrid[cellY][cellX] = { ...draggedTile };
+        setGridTiles(updatedGrid);
+        setTiles(updatedTiles);
+        
+        // Generate a new tile to replace the dragged one
+        setTimeout(() => {
+          const newTile: TilePosition = {
+            id: `tile-${Date.now()}`,
+            x: draggedTile.x,
+            y: draggedTile.y,
+            rotation: Math.floor(Math.random() * 4) * 90,
+            imageIndex: Math.floor(Math.random() * images.length),
+          };
+          setTiles(prev => [...prev, newTile]);
+        }, 100);
+      } else {
+        // If the cell is occupied, add the tile back to its original position
+        setTiles(prev => [...prev]);
+      }
+    } else {
+      // If dropped outside the grid but not in original position
+      const dropX = event.clientX;
+      const dropY = event.clientY;
+      
+      if (draggedTile) {
+        const updatedTiles = tiles.map(t => 
+          t.id === tileId 
+            ? { ...t, x: dropX - 25, y: dropY - 25 }
+            : t
+        );
+        setTiles(updatedTiles);
       }
     }
   };
@@ -122,6 +155,19 @@ export const GridPuzzle = () => {
 
     if (placed) {
       setGridTiles(updatedGrid);
+      setTiles(prev => prev.filter(t => t.id !== tileId));
+      
+      // Generate a new tile to replace the placed one
+      setTimeout(() => {
+        const newTile: TilePosition = {
+          id: `tile-${Date.now()}`,
+          x: tile.x,
+          y: tile.y,
+          rotation: Math.floor(Math.random() * 4) * 90,
+          imageIndex: Math.floor(Math.random() * images.length),
+        };
+        setTiles(prev => [...prev, newTile]);
+      }, 100);
     }
   };
 
@@ -129,6 +175,13 @@ export const GridPuzzle = () => {
     const updatedGrid = [...gridTiles];
     updatedGrid[y][x] = null;
     setGridTiles(updatedGrid);
+  };
+
+  const handleClear = () => {
+    const newGrid = Array(parseInt(vertical))
+      .fill(null)
+      .map(() => Array(parseInt(horizontal)).fill(null));
+    setGridTiles(newGrid);
   };
 
   return (
@@ -165,7 +218,7 @@ export const GridPuzzle = () => {
       {isGridGenerated && (
         <div
           ref={gridRef}
-          className="relative border border-black"
+          className="relative border border-black bg-white z-10"
           style={{
             display: 'grid',
             gridTemplateColumns: `repeat(${horizontal}, 50px)`,
@@ -176,7 +229,7 @@ export const GridPuzzle = () => {
             row.map((tile, x) => (
               <div
                 key={`${y}-${x}`}
-                className="border border-black w-[50px] h-[50px]"
+                className="border border-black w-[50px] h-[50px] bg-white"
                 onDoubleClick={() => handleGridDoubleClick(y, x)}
               >
                 {tile && (
@@ -195,7 +248,7 @@ export const GridPuzzle = () => {
       )}
 
       <AnimatePresence>
-        {tiles.map((tile, index) => (
+        {tiles.map((tile) => (
           <motion.img
             key={tile.id}
             src={images[tile.imageIndex]}
@@ -209,15 +262,25 @@ export const GridPuzzle = () => {
               rotate: tile.rotation,
             }}
             drag
-            dragSnapToOrigin
             onDragEnd={(event, info) => handleDragEnd(event, info, tile.id)}
             onDoubleClick={() => handleDoubleClick(tile.id)}
             whileHover={{ scale: 1.1 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
           />
         ))}
       </AnimatePresence>
+
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={handleClear}
+        className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium absolute bottom-20"
+      >
+        Clear
+      </motion.button>
     </div>
   );
 };
