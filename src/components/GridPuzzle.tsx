@@ -307,7 +307,6 @@ export const GridPuzzle = () => {
                 left: tile.x,
                 top: tile.y,
                 rotate: tile.rotation,
-                opacity: 0,
                 zIndex: 1
               }}
               drag
@@ -315,8 +314,8 @@ export const GridPuzzle = () => {
               onDoubleClick={() => handleDoubleClick(tile.id)}
               whileHover={{ scale: 1.1 }}
               whileDrag={{ zIndex: 15 }}
-              initial={{ opacity: 0.25, scale: 1 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 1, scale: 2 }}
               transition={{ duration: 0 }}
             />
           ))}
