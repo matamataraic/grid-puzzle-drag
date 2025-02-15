@@ -39,9 +39,9 @@ export const GridPuzzle = () => {
 
   const generateRandomTiles = (loadedImages: string[]) => {
     const newTiles: TilePosition[] = [];
-    // Generate at least 20 copies of each image
+    // Generate at least 50 copies of each image
     for (let imageIndex = 0; imageIndex < loadedImages.length; imageIndex++) {
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 50; i++) {
         newTiles.push({
           id: `tile-${imageIndex}-${i}`,
           x: Math.random() * (window.innerWidth - 100),
@@ -185,102 +185,114 @@ export const GridPuzzle = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col items-center pt-5">
-      <div className="flex items-center gap-4 mb-5">
-        <label className="text-sm font-medium">H</label>
-        <input
-          type="text"
-          maxLength={2}
-          value={horizontal}
-          onChange={(e) => setHorizontal(e.target.value.replace(/\D/g, ''))}
-          className="w-16 h-8 text-center border border-neutral-300 rounded-md"
-        />
-        <span className="text-sm font-medium">×</span>
-        <label className="text-sm font-medium">V</label>
-        <input
-          type="text"
-          maxLength={2}
-          value={vertical}
-          onChange={(e) => setVertical(e.target.value.replace(/\D/g, ''))}
-          className="w-16 h-8 text-center border border-neutral-300 rounded-md"
-        />
-      </div>
+    <div className="min-h-screen bg-neutral-50">
+      {/* Top clear strip */}
+      <div className="fixed top-0 left-0 right-0 h-[85px] bg-neutral-50 z-[5]" />
 
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={handleStart}
-        className="px-6 py-2 mb-5 bg-neutral-900 text-white rounded-md font-medium"
-      >
-        Start
-      </motion.button>
+      {/* Bottom clear strip */}
+      <div className="fixed bottom-0 left-0 right-0 h-[100px] bg-neutral-50 z-[5]" />
 
-      {isGridGenerated && (
-        <div
-          ref={gridRef}
-          className="relative border border-black bg-white z-10"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(${horizontal}, 50px)`,
-            gridTemplateRows: `repeat(${vertical}, 50px)`,
-          }}
-        >
-          {gridTiles.map((row, y) =>
-            row.map((tile, x) => (
-              <div
-                key={`${y}-${x}`}
-                className="border border-black w-[50px] h-[50px] bg-white"
-                onDoubleClick={() => handleGridDoubleClick(y, x)}
-              >
-                {tile && (
-                  <motion.img
-                    src={images[tile.imageIndex]}
-                    className="w-full h-full object-cover cursor-pointer"
-                    animate={{ rotate: tile.rotation }}
-                    onClick={() => handleRotate(y, x)}
-                    transition={{ type: 'spring', stiffness: 200 }}
-                  />
-                )}
-              </div>
-            ))
-          )}
-        </div>
-      )}
-
-      <AnimatePresence>
-        {tiles.map((tile) => (
-          <motion.img
-            key={tile.id}
-            src={images[tile.imageIndex]}
-            className={cn(
-              'absolute w-[50px] h-[50px] cursor-move',
-              'hover:shadow-lg transition-shadow'
-            )}
-            style={{
-              left: tile.x,
-              top: tile.y,
-              rotate: tile.rotation,
-            }}
-            drag
-            onDragEnd={(event, info) => handleDragEnd(event, info, tile.id)}
-            onDoubleClick={() => handleDoubleClick(tile.id)}
-            whileHover={{ scale: 1.1 }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.2 }}
+      <div className="flex flex-col items-center pt-[45px] relative">
+        <div className="flex items-center gap-4 mb-5 fixed top-[45px] z-20">
+          <label className="text-sm font-medium">H</label>
+          <input
+            type="text"
+            maxLength={2}
+            value={horizontal}
+            onChange={(e) => setHorizontal(e.target.value.replace(/\D/g, ''))}
+            className="w-16 h-8 text-center border border-neutral-300 rounded-md"
           />
-        ))}
-      </AnimatePresence>
+          <span className="text-sm font-medium">×</span>
+          <label className="text-sm font-medium">V</label>
+          <input
+            type="text"
+            maxLength={2}
+            value={vertical}
+            onChange={(e) => setVertical(e.target.value.replace(/\D/g, ''))}
+            className="w-16 h-8 text-center border border-neutral-300 rounded-md"
+          />
+        </div>
 
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={handleClear}
-        className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium absolute bottom-20"
-      >
-        Clear
-      </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleStart}
+          className="px-6 py-2 mb-5 bg-neutral-900 text-white rounded-md font-medium fixed top-[85px] z-20"
+        >
+          Start
+        </motion.button>
+
+        {isGridGenerated && (
+          <div
+            ref={gridRef}
+            className="relative border border-black bg-white z-10 mt-[130px]"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: `repeat(${horizontal}, 50px)`,
+              gridTemplateRows: `repeat(${vertical}, 50px)`,
+              position: 'fixed',
+              top: '0',
+              marginTop: '130px'
+            }}
+          >
+            {gridTiles.map((row, y) =>
+              row.map((tile, x) => (
+                <div
+                  key={`${y}-${x}`}
+                  className="border border-black w-[50px] h-[50px] bg-white"
+                  onDoubleClick={() => handleGridDoubleClick(y, x)}
+                >
+                  {tile && (
+                    <motion.img
+                      src={images[tile.imageIndex]}
+                      className="w-full h-full object-cover cursor-pointer"
+                      animate={{ rotate: tile.rotation }}
+                      onClick={() => handleRotate(y, x)}
+                      transition={{ type: 'spring', stiffness: 200 }}
+                    />
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        <AnimatePresence>
+          {tiles.map((tile) => (
+            <motion.img
+              key={tile.id}
+              src={images[tile.imageIndex]}
+              className={cn(
+                'absolute w-[50px] h-[50px] cursor-move',
+                'hover:shadow-lg transition-shadow'
+              )}
+              style={{
+                left: tile.x,
+                top: tile.y,
+                rotate: tile.rotation,
+                zIndex: 1
+              }}
+              drag
+              onDragEnd={(event, info) => handleDragEnd(event, info, tile.id)}
+              onDoubleClick={() => handleDoubleClick(tile.id)}
+              whileHover={{ scale: 1.1 }}
+              whileDrag={{ zIndex: 15 }}
+              initial={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0 }}
+            />
+          ))}
+        </AnimatePresence>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleClear}
+          className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium fixed bottom-20 z-20"
+        >
+          Clear
+        </motion.button>
+      </div>
     </div>
   );
 };
