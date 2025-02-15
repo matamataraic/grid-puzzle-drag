@@ -61,16 +61,13 @@ export const GridPuzzle = () => {
   // Load and resize images
   useEffect(() => {
     const loadImages = async () => {
-      const imageNames = ['S0', 'S1', 'S2'];
-      const loadedImages = await Promise.all(
-        imageNames.map(async (name) => {
-          const response = await fetch(`/${name}.png`);
-          const blob = await response.blob();
-          return URL.createObjectURL(blob);
-        })
-      );
-      setImages(loadedImages);
-      generateRandomTiles(loadedImages);
+      const imageUrls = [
+        'https://imgur.com/RSSS8zt',
+        'https://imgur.com/6xIAB8j',
+        'https://imgur.com/eRSAL3Z'
+      ];
+      setImages(imageUrls);
+      generateRandomTiles(imageUrls);
     };
     loadImages();
   }, []);
@@ -223,7 +220,7 @@ export const GridPuzzle = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-neutral-50 fixed w-full">
       {/* Top clear strip */}
       <div className="fixed top-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
 
@@ -276,7 +273,8 @@ export const GridPuzzle = () => {
               row.map((tile, x) => (
                 <div
                   key={`${y}-${x}`}
-                  className="border border-black w-[50px] h-[50px] bg-gray-100"
+                  className="border border-black w-[50px] h-[50px]"
+                  style={{ backgroundColor: '#282828' }}
                   onDoubleClick={() => handleGridDoubleClick(y, x)}
                 >
                   {tile && (
@@ -331,17 +329,17 @@ export const GridPuzzle = () => {
             Clear
           </motion.button>
           
-          <div className="flex flex-col items-start gap-2 mt-4">
-            <div className="flex gap-4">
-              <span className="text-sm font-medium w-8">S0:</span>
+          <div className="flex items-center gap-10 mt-5">
+            <div className="flex gap-2">
+              <span className="text-sm font-medium">S0:</span>
               <span className="text-sm">{imageCounts.S0}</span>
             </div>
-            <div className="flex gap-4">
-              <span className="text-sm font-medium w-8">S1:</span>
+            <div className="flex gap-2">
+              <span className="text-sm font-medium">S1:</span>
               <span className="text-sm">{imageCounts.S1}</span>
             </div>
-            <div className="flex gap-4">
-              <span className="text-sm font-medium w-8">S2:</span>
+            <div className="flex gap-2">
+              <span className="text-sm font-medium">S2:</span>
               <span className="text-sm">{imageCounts.S2}</span>
             </div>
           </div>
