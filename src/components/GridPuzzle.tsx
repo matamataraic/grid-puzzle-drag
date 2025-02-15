@@ -331,12 +331,12 @@ export const GridPuzzle = () => {
             Clear
           </motion.button>
           
-          <div className="flex items-center gap- 25 mt-5">
-            <div className="flex gap-200">
+          <div className="flex items-center gap- 50 mt-5">
+            <div className="flex gap-0">
               <span className="text-sm font-medium">S0:</span>
               <span className="text-sm">{imageCounts.S0}</span>
             </div>
-            <div className="flex gap-400">
+            <div className="flex gap-10">
               <span className="text-sm font-medium">S1:</span>
               <span className="text-sm">{imageCounts.S1}</span>
             </div>
