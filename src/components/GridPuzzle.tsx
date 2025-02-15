@@ -262,11 +262,13 @@ export const GridPuzzle = () => {
             ref={gridRef}
             className="relative border border-white bg-white z-10"
             style={{
-              display: 'grid',
-              gridTemplateColumns: `repeat(${horizontal}, 50px)`,
-              gridTemplateRows: `repeat(${vertical}, 50px)`,
-              position: 'fixed',
-              top: '165px'
+             display: 'grid',
+    gridTemplateColumns: `repeat(${horizontal}, 50px)`,
+    gridTemplateRows: `repeat(${vertical}, 50px)`,
+    position: 'fixed',
+    top: '165px',
+    borderWidth: '10px', // Controls outer border width
+    borderColor: 'white'  // Sets the outer border color to white
             }}
           >
             {gridTiles.map((row, y) =>
