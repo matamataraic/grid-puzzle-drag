@@ -260,7 +260,7 @@ export const GridPuzzle = () => {
         {isGridGenerated && (
           <div
             ref={gridRef}
-            className="relative border border-white bg-white z-10"
+            className="relative border border-BLACK bg-white z-10"
             style={{
              display: 'grid',
     gridTemplateColumns: `repeat(${horizontal}, 50px)`,
