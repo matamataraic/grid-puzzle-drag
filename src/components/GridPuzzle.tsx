@@ -260,22 +260,20 @@ export const GridPuzzle = () => {
         {isGridGenerated && (
           <div
             ref={gridRef}
-            className="relative border border-white bg-white z-10"
+            className="relative border border-black bg-white z-10"
             style={{
-             display: 'grid',
-    gridTemplateColumns: `repeat(${horizontal}, 50px)`,
-    gridTemplateRows: `repeat(${vertical}, 50px)`,
-    position: 'fixed',
-    top: '165px',
-    borderWidth: '20px', // Controls outer border width
-    borderColor: '#282828'   // Sets the outer border color to white
+              display: 'grid',
+              gridTemplateColumns: `repeat(${horizontal}, 50px)`,
+              gridTemplateRows: `repeat(${vertical}, 50px)`,
+              position: 'fixed',
+              top: '165px'
             }}
           >
             {gridTiles.map((row, y) =>
               row.map((tile, x) => (
                 <div
                   key={`${y}-${x}`}
-                  className="border border-white w-[50px] h-[50px]"
+                  className="border border-black w-[50px] h-[50px]"
                   style={{ backgroundColor: '#282828' }}
                   onDoubleClick={() => handleGridDoubleClick(y, x)}
                 >
