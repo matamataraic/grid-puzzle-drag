@@ -62,9 +62,9 @@ export const GridPuzzle = () => {
   useEffect(() => {
     const loadImages = async () => {
       const imageUrls = [
-        'https://imgur.com/RSSS8zt',
-        'https://imgur.com/6xIAB8j',
-        'https://imgur.com/eRSAL3Z'
+        'https://i.imgur.com/RSSS8zt.png',
+        'https://i.imgur.com/6xIAB8j.png',
+        'https://i.imgur.com/eRSAL3Z.png'
       ];
       setImages(imageUrls);
       generateRandomTiles(imageUrls);
