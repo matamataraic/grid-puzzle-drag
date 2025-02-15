@@ -332,7 +332,7 @@ export const GridPuzzle = () => {
           </motion.button>
           
           <div className="flex items-center gap-33 mt-5">
-            <div className="flex gap-2">
+            <div className="flex gap-33">
               <span className="text-sm font-medium">S0:</span>
               <span className="text-sm">{imageCounts.S0}</span>
             </div>
