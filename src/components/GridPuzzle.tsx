@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -19,6 +18,45 @@ export const GridPuzzle = () => {
   const [gridTiles, setGridTiles] = useState<(TilePosition | null)[][]>([]);
   const [images, setImages] = useState<string[]>([]);
   const gridRef = useRef<HTMLDivElement>(null);
+  const [imageCounts, setImageCounts] = useState({ S0: 0, S1: 0, S2: 0 });
+
+  // Handle infinite scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
+        const newTiles: TilePosition[] = [];
+        for (let imageIndex = 0; imageIndex < images.length; imageIndex++) {
+          for (let i = 0; i < 10; i++) {
+            newTiles.push({
+              id: `tile-${Date.now()}-${imageIndex}-${i}`,
+              x: Math.random() * (window.innerWidth - 100),
+              y: Math.random() * (document.documentElement.scrollHeight + 500),
+              rotation: Math.floor(Math.random() * 4) * 90,
+              imageIndex,
+            });
+          }
+        }
+        setTiles(prev => [...prev, ...newTiles]);
+        document.documentElement.style.minHeight = `${document.documentElement.scrollHeight + 500}px`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [images]);
+
+  // Update image counts whenever gridTiles changes
+  useEffect(() => {
+    const counts = { S0: 0, S1: 0, S2: 0 };
+    gridTiles.forEach(row => {
+      row.forEach(tile => {
+        if (tile) {
+          counts[`S${tile.imageIndex}` as keyof typeof counts]++;
+        }
+      });
+    });
+    setImageCounts(counts);
+  }, [gridTiles]);
 
   // Load and resize images
   useEffect(() => {
@@ -187,13 +225,13 @@ export const GridPuzzle = () => {
   return (
     <div className="min-h-screen bg-neutral-50">
       {/* Top clear strip */}
-      <div className="fixed top-0 left-0 right-0 h-[85px] bg-neutral-50 z-[5]" />
+      <div className="fixed top-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
 
       {/* Bottom clear strip */}
-      <div className="fixed bottom-0 left-0 right-0 h-[100px] bg-neutral-50 z-[5]" />
+      <div className="fixed bottom-0 left-0 right-0 h-[160px] bg-neutral-50 z-[5]" />
 
       <div className="flex flex-col items-center pt-[45px] relative">
-        <div className="flex items-center gap-4 mb-5 fixed top-[45px] z-20">
+        <div className="flex items-center gap-4 fixed top-[45px] z-20">
           <label className="text-sm font-medium">H</label>
           <input
             type="text"
@@ -217,7 +255,7 @@ export const GridPuzzle = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleStart}
-          className="px-6 py-2 mb-5 bg-neutral-900 text-white rounded-md font-medium fixed top-[85px] z-20"
+          className="px-6 py-2 mb-5 bg-neutral-900 text-white rounded-md font-medium fixed top-[105px] z-20"
         >
           Start
         </motion.button>
@@ -225,21 +263,20 @@ export const GridPuzzle = () => {
         {isGridGenerated && (
           <div
             ref={gridRef}
-            className="relative border border-black bg-white z-10 mt-[130px]"
+            className="relative border border-black bg-white z-10"
             style={{
               display: 'grid',
               gridTemplateColumns: `repeat(${horizontal}, 50px)`,
               gridTemplateRows: `repeat(${vertical}, 50px)`,
               position: 'fixed',
-              top: '0',
-              marginTop: '130px'
+              top: '165px'
             }}
           >
             {gridTiles.map((row, y) =>
               row.map((tile, x) => (
                 <div
                   key={`${y}-${x}`}
-                  className="border border-black w-[50px] h-[50px] bg-white"
+                  className="border border-black w-[50px] h-[50px] bg-gray-100"
                   onDoubleClick={() => handleGridDoubleClick(y, x)}
                 >
                   {tile && (
@@ -284,14 +321,31 @@ export const GridPuzzle = () => {
           ))}
         </AnimatePresence>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleClear}
-          className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium fixed bottom-20 z-20"
-        >
-          Clear
-        </motion.button>
+        <div className="fixed bottom-0 left-0 right-0 flex flex-col items-center gap-4 pb-4 z-20">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleClear}
+            className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+          >
+            Clear
+          </motion.button>
+          
+          <div className="flex flex-col items-start gap-2 mt-4">
+            <div className="flex gap-4">
+              <span className="text-sm font-medium w-8">S0:</span>
+              <span className="text-sm">{imageCounts.S0}</span>
+            </div>
+            <div className="flex gap-4">
+              <span className="text-sm font-medium w-8">S1:</span>
+              <span className="text-sm">{imageCounts.S1}</span>
+            </div>
+            <div className="flex gap-4">
+              <span className="text-sm font-medium w-8">S2:</span>
+              <span className="text-sm">{imageCounts.S2}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
