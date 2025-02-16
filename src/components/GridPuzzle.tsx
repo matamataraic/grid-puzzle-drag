@@ -260,7 +260,15 @@ const generateRandomTiles = (loadedImages: string[]) => {
             className="w-16 h-8 text-center border border-neutral-300 rounded-md"
           />
         </div>
-
+ {/* Restart Button */}
+  <motion.button
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    onClick={handleRestart}
+    className="px-6 py-2 bg-red-500 text-white rounded-md font-medium"
+  >
+    Restart
+  </motion.button>
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
