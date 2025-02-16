@@ -104,8 +104,8 @@ export const GridPuzzle = () => {
     const cols = Math.floor(window.innerWidth / 51);
     const rows = Math.floor(window.innerHeight / 51);
 
-    const centerX = Math.floor(cols / 2);
-    const centerY = Math.floor(rows / 2);
+    const centerX = Math.floor(cols / 1);
+    const centerY = Math.floor(rows / 1);
 
     let index = 0;
 
