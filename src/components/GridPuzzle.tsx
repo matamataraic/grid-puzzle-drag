@@ -356,7 +356,7 @@ export const GridPuzzle = () => {
             onClick={handleStart}
             className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
           >
-            Start
+            start
           </motion.button>
 
           <motion.button
@@ -365,7 +365,7 @@ export const GridPuzzle = () => {
             onClick={handleClear}
             className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
           >
-            Clear
+            clear
           </motion.button>
 
           <motion.button
@@ -449,7 +449,7 @@ export const GridPuzzle = () => {
             onClick={handleOrderClick}
             className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
           >
-            Order
+            order
           </motion.button>
 
           <div className="flex items-start gap-10 mt-2.5">
@@ -522,7 +522,7 @@ export const GridPuzzle = () => {
                 onClick={() => setShowWarning(false)}
                 className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
               >
-                Nazad
+                nazad
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -533,7 +533,7 @@ export const GridPuzzle = () => {
                 }}
                 className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
               >
-                Ok
+                ok
               </motion.button>
             </DialogFooter>
           </DialogContent>
