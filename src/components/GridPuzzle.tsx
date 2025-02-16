@@ -481,14 +481,15 @@ export const GridPuzzle = () => {
         <Dialog open={showInfo} onOpenChange={setShowInfo}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Upute</DialogTitle>
+              <DialogTitle>što i kako</DialogTitle>
               <DialogDescription className="text-left space-y-2">
                 <p>• zadaj broj polja tablice u širinu (š) i visinu (v) (jedna pločica 15x15cm)</p>
-                <p>• stvori svoju kompoziciju povlačenjem odabrane pločice na odabrano mjesto</p>
+                <p>• crno polje je prazno polje</p>
+                <p>• stvori svoju kompoziciju povlačenjem odabrane pločice na odabrano mjesto ili dvostrukim klikom na pločicu popuni prvo prazno mjesto</p>
                 <p>• promijeni orijentaciju pločice jednim klikom</p>
-                <p>• ukloni pločinu dvostrukim klikom</p>
-                <p>• "restart" kreni od nule</p>
+                <p>• ukloni pločicu dvostrukim klikom</p>
                 <p>• "clear" zadrži raspored, pobriši pločice</p>
+                <p>• "restart" kreni od nule</p>
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
