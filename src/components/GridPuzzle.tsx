@@ -8,6 +8,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 
 interface TilePosition {
@@ -38,6 +39,7 @@ export const GridPuzzle = () => {
   const [imageCounts, setImageCounts] = useState({ S0: 0, S1: 0, S2: 0 });
   const [showInfo, setShowInfo] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
   const [orderForm, setOrderForm] = useState<OrderFormData>({
     name: '',
     address: '',
@@ -303,6 +305,15 @@ export const GridPuzzle = () => {
     window.location.href = mailtoLink;
   };
 
+  const handleOrderClick = () => {
+    const hasEmptyCells = gridTiles.some(row => row.some(cell => cell === null));
+    if (hasEmptyCells) {
+      setShowWarning(true);
+    } else {
+      setShowOrder(true);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-neutral-50 fixed w-full">
       <div className="fixed top-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
@@ -435,7 +446,7 @@ export const GridPuzzle = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setShowOrder(true)}
+            onClick={handleOrderClick}
             className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
           >
             Order
@@ -492,6 +503,39 @@ export const GridPuzzle = () => {
                 <p>• "restart" kreni od nule</p>
               </DialogDescription>
             </DialogHeader>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={showWarning} onOpenChange={setShowWarning}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Upozorenje</DialogTitle>
+              <DialogDescription className="text-left space-y-2">
+                <p>Neka polja nisu popunjena</p>
+                <p>(crno polje - prazno polje)</p>
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex gap-4">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowWarning(false)}
+                className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+              >
+                Nazad
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  setShowWarning(false);
+                  setShowOrder(true);
+                }}
+                className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+              >
+                Ok
+              </motion.button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
 
