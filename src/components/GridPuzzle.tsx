@@ -498,9 +498,9 @@ export const GridPuzzle = () => {
         <Dialog open={showOrder} onOpenChange={setShowOrder}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Narudžba</DialogTitle>
+              <DialogTitle>naruči</DialogTitle>
               <DialogDescription className="text-left space-y-4">
-                <p>Ispunjavanjem ove forme generira se mail za narudžbu. nakon zaprimanja, na mail ćemo Vam poslati račun. obavijestit ćemo Vas o vidljivoj uplati nakon čega je rok isporuke dva tjedna</p>
+                <p>ispunjavanjem ove forme generira se mail za narudžbu. nakon zaprimanja, na mail ćemo Vam poslati račun. obavijestit ćemo Vas o vidljivoj uplati nakon čega je rok isporuke dva tjedna.</p>
                 
                 <div className="space-y-2">
                   <p>S0: {imageCounts.S0} x 5€ = {imageCounts.S0 * 5}€</p>
