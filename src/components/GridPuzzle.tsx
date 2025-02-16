@@ -111,7 +111,7 @@ export const GridPuzzle = () => {
 
     for (let y = -centerY; y < centerY; y++) {
       for (let x = -centerX; x < centerX; x++) {
-        if ((x + y) % 2 === 0) {
+        if ((x + y) % 1 === 0) {
           newTiles.push({
             id: `tile-${index}`,
             x: window.innerWidth / 2 + x * 51,
