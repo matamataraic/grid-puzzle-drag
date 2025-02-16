@@ -544,7 +544,7 @@ export const GridPuzzle = () => {
             <DialogHeader>
               <DialogTitle>naruči</DialogTitle>
               <DialogDescription className="text-left space-y-4">
-                <p>ispunjavanjem ove forme generira se mail za narudžbu. nakon zaprimanja, na mail ćemo Vam poslati račun. obavijestit ćemo Vas o vidljivoj uplati nakon čega je rok isporuke dva tjedna.</p>
+                <p>ispunjavanjem ove forme generira se mail za narudžbu. nakon zaprimanja, na mail ćemo Vam poslati račun. obavijestit ćemo Vas o vidljivoj uplati nakon čega je rok isporuke dva tjedna. poštarina za Hrvatsku uključena u cijenu.</p>
                 
                 <div className="space-y-2">
                   <p>S0: {imageCounts.S0} x 5€ = {imageCounts.S0 * 5}€</p>
@@ -597,6 +597,7 @@ export const GridPuzzle = () => {
                     onChange={(e) => setOrderForm(prev => ({ ...prev, email: e.target.value }))}
                     className="w-full px-4 py-2 border rounded-md"
                   />
+                    <p>napomena: sva polja su obvezna</p>
                 </div>
 
                 <motion.button
