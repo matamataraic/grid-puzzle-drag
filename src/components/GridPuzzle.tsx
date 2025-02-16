@@ -115,8 +115,29 @@ export const GridPuzzle = () => {
     const v = parseInt(vertical);
     if (isNaN(h) || isNaN(v) || h <= 0 || v <= 0) return;
 
-    const newGrid = Array(v).fill(null).map(() => Array(h).fill(null));
-    setGridTiles(newGrid);
+    // If there's an existing grid, adapt it to the new dimensions
+    if (isGridGenerated && gridTiles.length > 0) {
+      const oldRows = gridTiles.length;
+      const oldCols = gridTiles[0].length;
+      
+      // Create new grid with new dimensions while preserving existing tiles
+      const newGrid = Array(v).fill(null).map((_, rowIndex) => 
+        Array(h).fill(null).map((_, colIndex) => {
+          // If within bounds of old grid, keep the existing tile
+          if (rowIndex < oldRows && colIndex < oldCols) {
+            return gridTiles[rowIndex][colIndex];
+          }
+          return null;
+        })
+      );
+      
+      setGridTiles(newGrid);
+    } else {
+      // If no existing grid, create a new empty one
+      const newGrid = Array(v).fill(null).map(() => Array(h).fill(null));
+      setGridTiles(newGrid);
+    }
+    
     setIsGridGenerated(true);
   };
 
@@ -258,7 +279,7 @@ export const GridPuzzle = () => {
 
       <div className="flex flex-col items-center pt-[45px] relative">
         <div className="flex items-center gap-4 fixed top-[45px] z-20">
-          <label className="text-sm font-medium">H</label>
+          <label className="text-sm font-medium">Š</label>
           <input
             type="text"
             maxLength={2}
