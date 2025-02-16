@@ -597,7 +597,7 @@ export const GridPuzzle = () => {
                     onChange={(e) => setOrderForm(prev => ({ ...prev, email: e.target.value }))}
                     className="w-full px-4 py-2 border rounded-md"
                   />
-                    <p>napomena: sva polja su obvezna</p>
+                    <p>napomena: ispuniti sva polja</p>
                 </div>
 
                 <motion.button
