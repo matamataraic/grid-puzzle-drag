@@ -509,9 +509,9 @@ export const GridPuzzle = () => {
         <Dialog open={showWarning} onOpenChange={setShowWarning}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Upozorenje</DialogTitle>
+              <DialogTitle>upozorenje</DialogTitle>
               <DialogDescription className="text-left space-y-2">
-                <p>Neka polja nisu popunjena</p>
+                <p>neka polja nisu popunjena</p>
                 <p>(crno polje - prazno polje)</p>
               </DialogDescription>
             </DialogHeader>
