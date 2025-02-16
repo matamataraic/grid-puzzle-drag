@@ -494,7 +494,7 @@ export const GridPuzzle = () => {
             <DialogHeader>
               <DialogTitle>kako</DialogTitle>
               <DialogDescription className="text-left space-y-2">
-                <p>• zadaj broj polja tablice u širinu (š) i visinu (v) (jedno polje 15x15cm)</p>
+                <p>• zadaj broj polja u širinu (š) i visinu (v) (jedno polje 15x15cm)</p>
                 <p>• crno polje = prazno polje</p>
                 <p>• stvori svoju kompoziciju povlačenjem odabrane pločice na odabrano polje ili dvostrukim klikom na pločicu popuni prvo prazno polje</p>
                 <p>• promijeni orijentaciju pločice jednim klikom</p>
