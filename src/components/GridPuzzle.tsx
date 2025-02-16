@@ -104,8 +104,8 @@ export const GridPuzzle = () => {
     const cols = Math.floor(window.innerWidth / 51);
     const rows = Math.floor(window.innerHeight / 51);
 
-    const centerX = Math.floor(cols / 1);
-    const centerY = Math.floor(rows / 1);
+    const centerX = Math.floor(cols / 2);
+    const centerY = Math.floor(rows / 2);
 
     let index = 0;
 
@@ -113,8 +113,8 @@ export const GridPuzzle = () => {
       for (let x = -centerX; x < centerX; x++) {
           newTiles.push({
             id: `tile-${index}`,
-            x: window.innerWidth / 2 + x * 51,
-            y: window.innerHeight / 2 + y * 51,
+            x: window.innerWidth / 1 + x * 51,
+            y: window.innerHeight / 1 + y * 51,
             rotation: Math.floor(Math.random() * 4) * 90,
             imageIndex: Math.floor(Math.random() * loadedImages.length),
           });
