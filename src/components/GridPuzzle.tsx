@@ -492,7 +492,7 @@ export const GridPuzzle = () => {
         <Dialog open={showInfo} onOpenChange={setShowInfo}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>što i kako</DialogTitle>
+              <DialogTitle>kako</DialogTitle>
               <DialogDescription className="text-left space-y-2">
                 <p>• zadaj broj polja tablice u širinu (š) i visinu (v) (jedna pločica 15x15cm)</p>
                 <p>• crno polje je prazno polje</p>
