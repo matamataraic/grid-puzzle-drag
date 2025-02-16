@@ -1,6 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { Info, RotateCcw } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface TilePosition {
   id: string;
@@ -19,6 +27,7 @@ export const GridPuzzle = () => {
   const [images, setImages] = useState<string[]>([]);
   const gridRef = useRef<HTMLDivElement>(null);
   const [imageCounts, setImageCounts] = useState({ S0: 0, S1: 0, S2: 0 });
+  const [showInfo, setShowInfo] = useState(false);
 
   // Handle infinite scroll
   useEffect(() => {
@@ -72,35 +81,34 @@ export const GridPuzzle = () => {
     loadImages();
   }, []);
 
-const generateRandomTiles = (loadedImages: string[]) => {
-  const newTiles: TilePosition[] = [];
-  
-  const cols = Math.floor(window.innerWidth / 51); // Columns based on screen width (50px + 1px gap)
-  const rows = Math.floor(window.innerHeight / 51); // Rows based on screen height
+  const generateRandomTiles = (loadedImages: string[]) => {
+    const newTiles: TilePosition[] = [];
+    
+    const cols = Math.floor(window.innerWidth / 51); // Columns based on screen width (50px + 1px gap)
+    const rows = Math.floor(window.innerHeight / 51); // Rows based on screen height
 
-  const centerX = Math.floor(cols / 2); // Center column index
-  const centerY = Math.floor(rows / 2); // Center row index
+    const centerX = Math.floor(cols / 2); // Center column index
+    const centerY = Math.floor(rows / 2); // Center row index
 
-  let index = 0;
+    let index = 0;
 
-  for (let y = -centerY; y < centerY; y++) {
-    for (let x = -centerX; x < centerX; x++) {
-      if ((x + y) % 2 === 0) { // Only place a tile in every second field
-        newTiles.push({
-          id: `tile-${index}`,
-          x: window.innerWidth / 2 + x * 51, // Centering X
-          y: window.innerHeight / 2 + y * 51, // Centering Y
-          rotation: Math.floor(Math.random() * 4) * 90,
-          imageIndex: Math.floor(Math.random() * loadedImages.length), // Random image
-        });
-        index++;
+    for (let y = -centerY; y < centerY; y++) {
+      for (let x = -centerX; x < centerX; x++) {
+        if ((x + y) % 2 === 0) { // Only place a tile in every second field
+          newTiles.push({
+            id: `tile-${index}`,
+            x: window.innerWidth / 2 + x * 51, // Centering X
+            y: window.innerHeight / 2 + y * 51, // Centering Y
+            rotation: Math.floor(Math.random() * 4) * 90,
+            imageIndex: Math.floor(Math.random() * loadedImages.length), // Random image
+          });
+          index++;
+        }
       }
     }
-  }
 
-  setTiles(newTiles);
-};
-
+    setTiles(newTiles);
+  };
 
   const handleStart = () => {
     const h = parseInt(horizontal);
@@ -110,6 +118,14 @@ const generateRandomTiles = (loadedImages: string[]) => {
     const newGrid = Array(v).fill(null).map(() => Array(h).fill(null));
     setGridTiles(newGrid);
     setIsGridGenerated(true);
+  };
+
+  const handleRestart = () => {
+    setHorizontal('');
+    setVertical('');
+    setIsGridGenerated(false);
+    setGridTiles([]);
+    setImageCounts({ S0: 0, S1: 0, S2: 0 });
   };
 
   const handleDragEnd = (
@@ -261,27 +277,47 @@ const generateRandomTiles = (loadedImages: string[]) => {
           />
         </div>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleStart}
-          className="px-6 py-2 mb-5 bg-neutral-900 text-white rounded-md font-medium fixed top-[105px] z-20"
-        >
-          Start
-        </motion.button>
+        <div className="fixed top-[105px] z-20 flex items-center gap-4">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleRestart}
+            className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleStart}
+            className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+          >
+            Start
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowInfo(true)}
+            className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+          >
+            <Info className="w-4 h-4" />
+          </motion.button>
+        </div>
 
         {isGridGenerated && (
           <div
             ref={gridRef}
             className="relative border border-BLACK bg-white z-10"
             style={{
-             display: 'grid',
-    gridTemplateColumns: `repeat(${horizontal}, 50px)`,
-    gridTemplateRows: `repeat(${vertical}, 50px)`,
-    position: 'fixed',
-    top: '165px',
-    borderWidth: '1px', // Controls outer border width
-    borderColor: 'white'  // Sets the outer border color to white
+              display: 'grid',
+              gridTemplateColumns: `repeat(${horizontal}, 50px)`,
+              gridTemplateRows: `repeat(${vertical}, 50px)`,
+              position: 'fixed',
+              top: '165px',
+              borderWidth: '1px',
+              borderColor: 'white'
             }}
           >
             {gridTiles.map((row, y) =>
@@ -344,7 +380,7 @@ const generateRandomTiles = (loadedImages: string[]) => {
             Clear
           </motion.button>
           
-          <div className="flex items-center gap-10 mt-5">
+          <div className="flex items-center gap-10 mt-2.5">
             <div className="flex gap-2">
               <span className="text-sm font-medium">S0:</span>
               <span className="text-sm">{imageCounts.S0}</span>
@@ -358,7 +394,22 @@ const generateRandomTiles = (loadedImages: string[]) => {
               <span className="text-sm">{imageCounts.S2}</span>
             </div>
           </div>
+
+          <div className="text-sm mt-2.5">
+            {horizontal && vertical && `${parseInt(horizontal) * 15} x ${parseInt(vertical) * 15} cm`}
+          </div>
         </div>
+
+        <Dialog open={showInfo} onOpenChange={setShowInfo}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Information</DialogTitle>
+              <DialogDescription>
+                bla bla bla bla
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
