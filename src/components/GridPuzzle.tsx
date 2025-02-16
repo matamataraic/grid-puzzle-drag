@@ -359,15 +359,6 @@ export const GridPuzzle = () => {
             start
           </motion.button>
 
-      <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleRandom}
-            className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
-          >
-            random
-          </motion.button>
-
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
