@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -424,9 +425,14 @@ export const GridPuzzle = () => {
         <Dialog open={showInfo} onOpenChange={setShowInfo}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Information</DialogTitle>
-              <DialogDescription>
-                bla bla bla bla
+              <DialogTitle>Upute</DialogTitle>
+              <DialogDescription className="text-left space-y-2">
+                <p>• zadaj broj polja tablice u širinu (š) i visinu (v) (jedna pločica 15x15cm)</p>
+                <p>• stvori svoju kompoziciju povlačenjem odabrane pločice na odabrano mjesto</p>
+                <p>• promijeni orijentaciju pločice jednim klikom</p>
+                <p>• ukloni pločinu dvostrukim klikom</p>
+                <p>• "restart" kreni od nule</p>
+                <p>• "clear" zadrži raspored, pobriši pločice</p>
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
