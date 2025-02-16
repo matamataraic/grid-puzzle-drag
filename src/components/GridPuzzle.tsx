@@ -72,22 +72,35 @@ export const GridPuzzle = () => {
     loadImages();
   }, []);
 
-  const generateRandomTiles = (loadedImages: string[]) => {
-    const newTiles: TilePosition[] = [];
-    // Generate at least 50 copies of each image
-    for (let imageIndex = 0; imageIndex < loadedImages.length; imageIndex++) {
-      for (let i = 0; i < 75; i++) {
+const generateRandomTiles = (loadedImages: string[]) => {
+  const newTiles: TilePosition[] = [];
+  
+  const cols = Math.floor(window.innerWidth / 51); // Columns based on screen width (50px + 1px gap)
+  const rows = Math.floor(window.innerHeight / 51); // Rows based on screen height
+
+  const centerX = Math.floor(cols / 2); // Center column index
+  const centerY = Math.floor(rows / 2); // Center row index
+
+  let index = 0;
+
+  for (let y = -centerY; y < centerY; y++) {
+    for (let x = -centerX; x < centerX; x++) {
+      if ((x + y) % 2 === 0) { // Only place a tile in every second field
         newTiles.push({
-          id: `tile-${imageIndex}-${i}`,
-          x: Math.random() * (window.innerWidth - 100),
-          y: Math.random() * (window.innerHeight - 200), // Adjusted to account for clear button
+          id: `tile-${index}`,
+          x: window.innerWidth / 2 + x * 51, // Centering X
+          y: window.innerHeight / 2 + y * 51, // Centering Y
           rotation: Math.floor(Math.random() * 4) * 90,
-          imageIndex,
+          imageIndex: Math.floor(Math.random() * loadedImages.length), // Random image
         });
+        index++;
       }
     }
-    setTiles(newTiles);
-  };
+  }
+
+  setTiles(newTiles);
+};
+
 
   const handleStart = () => {
     const h = parseInt(horizontal);
