@@ -606,7 +606,7 @@ export const GridPuzzle = () => {
                   onClick={handleSubmitOrder}
                   className="w-full px-6 py-2 bg-neutral-900 text-white rounded-md font-medium mt-4"
                 >
-                  Pošalji
+                  pošalji
                 </motion.button>
               </DialogDescription>
             </DialogHeader>
