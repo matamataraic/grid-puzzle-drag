@@ -328,7 +328,7 @@ const generateRandomTiles = (loadedImages: string[]) => {
               whileHover={{ scale: 1.1 }}
               whileDrag={{ zIndex: 15 }}
               initial={{ opacity: 1, scale: 1 }}
-              animate={{ opacity: 0.25, scale: 1 }}
+              animate={{ opacity: 0.15, scale: 1 }}
               transition={{ duration: 0 }}
             />
           ))}
