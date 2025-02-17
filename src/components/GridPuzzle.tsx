@@ -396,7 +396,7 @@ export const GridPuzzle = () => {
 
   return (
     <div className="min-h-screen bg-neutral-50 fixed w-full overflow-auto">
-      <div className="fixed top-0 left-0 right-0 h-[145px] bg-neutral-50 z-[5]" />
+      <div className="fixed top-0 left-0 right-0 h-[155px] bg-neutral-50 z-[5]" />
       <div className="fixed bottom-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
 
       <div className="flex flex-col items-center pt-[20px] relative">
