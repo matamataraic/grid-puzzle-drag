@@ -620,7 +620,7 @@ export const GridPuzzle = () => {
                 <p> ***dolje*** </p>
                 <p> -OKO- za pregled kompozicije</p>
                 <p>• "order" pokreni narudžbu</p>
-                <p> -DISKETA- icon za pohranu trenutne kompozicije</p>
+                <p> -DISKETA- za pohranu trenutne kompozicije</p>
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
