@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Info, RotateCcw } from 'lucide-react';
+import { Info, RotateCcw, Save } from 'lucide-react';
+import html2canvas from 'html2canvas';
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,8 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 interface TilePosition {
   id: string;
@@ -40,6 +43,9 @@ export const GridPuzzle = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
+  const [showFieldsWarning, setShowFieldsWarning] = useState(false);
+  const [orderType, setOrderType] = useState<"regular" | "magnetic">("regular");
+  const [headerImage, setHeaderImage] = useState('https://i.imgur.com/R4Hgigd.jpeg');
   const [orderForm, setOrderForm] = useState<OrderFormData>({
     name: '',
     address: '',
@@ -277,12 +283,50 @@ export const GridPuzzle = () => {
     setGridTiles(newGrid);
   };
 
+  const handleRandom = () => {
+    const randomH = Math.floor(Math.random() * 9) + 2;
+    const randomV = Math.floor(Math.random() * 9) + 2;
+    setHorizontal(randomH.toString());
+    setVertical(randomV.toString());
+    
+    const newGrid = Array(randomV).fill(null).map(() => 
+      Array(randomH).fill(null).map(() => ({
+        id: `tile-${Date.now()}-${Math.random()}`,
+        x: 0,
+        y: 0,
+        rotation: Math.floor(Math.random() * 4) * 90,
+        imageIndex: Math.floor(Math.random() * images.length),
+      }))
+    );
+    
+    setGridTiles(newGrid);
+    setIsGridGenerated(true);
+  };
+
+  const handleSave = async () => {
+    if (gridRef.current) {
+      const canvas = await html2canvas(gridRef.current);
+      const image = canvas.toDataURL('image/jpeg');
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = `${getOrderTitle()}.jpg`;
+      link.click();
+    }
+  };
+
   const handleSubmitOrder = () => {
-    const subject = `Order ${new Date().toLocaleString()}`;
+    const areAllFieldsFilled = Object.values(orderForm).every(value => value.trim() !== '');
+    if (!areAllFieldsFilled) {
+      setShowFieldsWarning(true);
+      return;
+    }
+
+    const subject = getOrderTitle();
     const totalS0 = imageCounts.S0 * 5;
     const totalS1 = imageCounts.S1 * 10;
     const totalS2 = imageCounts.S2 * 10;
-    const grandTotal = totalS0 + totalS1 + totalS2;
+    const magneticCost = orderType === "magnetic" ? (imageCounts.S0 + imageCounts.S1 + imageCounts.S2) * 3 : 0;
+    const grandTotal = totalS0 + totalS1 + totalS2 + magneticCost;
     
     const body = `
     Ime i prezime: ${orderForm.name}
@@ -296,6 +340,7 @@ export const GridPuzzle = () => {
     S0: ${imageCounts.S0} x 5€ = ${totalS0}€
     S1: ${imageCounts.S1} x 10€ = ${totalS1}€
     S2: ${imageCounts.S2} x 10€ = ${totalS2}€
+    ${orderType === "magnetic" ? `Magnetni dodatak: ${magneticCost}€` : ''}
 
     Dimenzije: ${horizontal && vertical ? `${parseInt(horizontal) * 15} x ${parseInt(vertical) * 15} cm` : ''}
     Ukupno: ${grandTotal.toFixed(2)}€
@@ -303,6 +348,27 @@ export const GridPuzzle = () => {
 
     const mailtoLink = `mailto:matamataraic@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoLink;
+  };
+
+  const getOrderTitle = () => {
+    return `Kompozicija S0${imageCounts.S0} S1${imageCounts.S1} S2${imageCounts.S2} ${getCurrentDate()}`;
+  };
+
+  const getCurrentDate = () => {
+    const date = new Date();
+    return date.toLocaleDateString('hr-HR', { 
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }).replace(/\./g, '');
+  };
+
+  const getCurrentDateTime = () => {
+    const date = new Date();
+    return `${getCurrentDate()} ${date.toLocaleTimeString('hr-HR', { 
+      hour: '2-digit',
+      minute: '2-digit'
+    }).replace(/\./g, '')}`;
   };
 
   const handleOrderClick = () => {
@@ -315,11 +381,18 @@ export const GridPuzzle = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 fixed w-full">
-      <div className="fixed top-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
+    <div className="min-h-screen bg-neutral-50 fixed w-full overflow-auto">
+      <div className="fixed top-0 left-0 right-0 h-[165px] bg-neutral-50 z-[5]" />
       <div className="fixed bottom-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
 
-      <div className="flex flex-col items-center pt-[45px] relative">
+      <div className="flex flex-col items-center pt-[20px] relative">
+        <img 
+          src={headerImage} 
+          alt="Header"
+          className="w-[400px] mb-5"
+          style={{ marginTop: '20px' }}
+        />
+
         <div className="flex items-center gap-4 fixed top-[45px] z-20">
           <label className="text-sm font-medium">Š</label>
           <input
@@ -356,7 +429,16 @@ export const GridPuzzle = () => {
             onClick={handleStart}
             className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
           >
-            start
+            Start
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleRandom}
+            className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+          >
+            Random
           </motion.button>
 
           <motion.button
@@ -365,7 +447,7 @@ export const GridPuzzle = () => {
             onClick={handleClear}
             className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
           >
-            clear
+            Clear
           </motion.button>
 
           <motion.button
@@ -381,13 +463,15 @@ export const GridPuzzle = () => {
         {isGridGenerated && (
           <div
             ref={gridRef}
-            className="relative border border-BLACK bg-white z-10"
+            className="relative border border-BLACK bg-white z-10 overflow-auto"
             style={{
               display: 'grid',
               gridTemplateColumns: `repeat(${horizontal}, 50px)`,
               gridTemplateRows: `repeat(${vertical}, 50px)`,
               position: 'fixed',
               top: '165px',
+              maxHeight: 'calc(100vh - 340px)',
+              maxWidth: 'calc(100vw - 40px)',
               borderWidth: '1px',
               borderColor: 'white'
             }}
@@ -443,14 +527,24 @@ export const GridPuzzle = () => {
         </AnimatePresence>
 
         <div className="fixed bottom-[5px] left-0 right-0 flex flex-col items-center gap-1 pb-10 z-20">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleOrderClick}
-            className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
-          >
-            order
-          </motion.button>
+          <div className="flex items-center gap-2">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleOrderClick}
+              className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+            >
+              Order
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleSave}
+              className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+            >
+              <Save className="w-4 h-4" />
+            </motion.button>
+          </div>
 
           <div className="flex items-start gap-10 mt-2.5">
             <div className="flex flex-col items-center">
@@ -509,9 +603,9 @@ export const GridPuzzle = () => {
         <Dialog open={showWarning} onOpenChange={setShowWarning}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>upozorenje</DialogTitle>
+              <DialogTitle>Upozorenje</DialogTitle>
               <DialogDescription className="text-left space-y-2">
-                <p>neka polja nisu popunjena</p>
+                <p>Neka polja nisu popunjena</p>
                 <p>(crno polje - prazno polje)</p>
               </DialogDescription>
             </DialogHeader>
@@ -522,7 +616,7 @@ export const GridPuzzle = () => {
                 onClick={() => setShowWarning(false)}
                 className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
               >
-                nazad
+                Nazad
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -533,7 +627,28 @@ export const GridPuzzle = () => {
                 }}
                 className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
               >
-                ok
+                Ok
+              </motion.button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={showFieldsWarning} onOpenChange={setShowFieldsWarning}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Upozorenje</DialogTitle>
+              <DialogDescription>
+                Molimo popunite sva polja
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowFieldsWarning(false)}
+                className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+              >
+                Ok
               </motion.button>
             </DialogFooter>
           </DialogContent>
@@ -542,16 +657,41 @@ export const GridPuzzle = () => {
         <Dialog open={showOrder} onOpenChange={setShowOrder}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>naruči</DialogTitle>
+              <DialogTitle>{getOrderTitle()}</DialogTitle>
               <DialogDescription className="text-left space-y-4">
-                <p>ispunjavanjem ove forme generira se mail za narudžbu. nakon zaprimanja, na mail ćemo Vam poslati račun. obavijestit ćemo Vas o vidljivoj uplati nakon čega je rok isporuke dva tjedna. poštarina za Hrvatsku uključena u cijenu.</p>
+                <p>Ispunjavanjem ove forme generira se mail za narudžbu. nakon zaprimanja, na mail ćemo Vam poslati račun. obavijestit ćemo Vas o vidljivoj uplati nakon čega je rok isporuke dva tjedna</p>
                 
+                <RadioGroup value={orderType} onValueChange={(value) => setOrderType(value as "regular" | "magnetic")}>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="regular" id="regular" />
+                    <Label htmlFor="regular">
+                      {getOrderTitle()} - {((imageCounts.S0 * 5) + (imageCounts.S1 * 10) + (imageCounts.S2 * 10)).toFixed(2)}€
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="magnetic" id="magnetic" />
+                    <Label htmlFor="magnetic">
+                      {getOrderTitle()} M (pločice s magnetom za mogućnost mijenjanja kompozicije po želji) - {((imageCounts.S0 * 5) + (imageCounts.S1 * 10) + (imageCounts.S2 * 10) + (imageCounts.S0 + imageCounts.S1 + imageCounts.S2) * 3).toFixed(2)}€
+                    </Label>
+                  </div>
+                </RadioGroup>
+
                 <div className="space-y-2">
                   <p>S0: {imageCounts.S0} x 5€ = {imageCounts.S0 * 5}€</p>
                   <p>S1: {imageCounts.S1} x 10€ = {imageCounts.S1 * 10}€</p>
                   <p>S2: {imageCounts.S2} x 10€ = {imageCounts.S2 * 10}€</p>
+                  {orderType === "magnetic" && (
+                    <p>Magnetni dodatak: {(imageCounts.S0 + imageCounts.S1 + imageCounts.S2) * 3}€</p>
+                  )}
                   <p>Dimenzije: {horizontal && vertical ? `${parseInt(horizontal) * 15} x ${parseInt(vertical) * 15} cm` : ''}</p>
-                  <p className="font-bold">Ukupno: {((imageCounts.S0 * 5) + (imageCounts.S1 * 10) + (imageCounts.S2 * 10)).toFixed(2)}€</p>
+                  <p className="font-bold">
+                    Ukupno: {(
+                      (imageCounts.S0 * 5) + 
+                      (imageCounts.S1 * 10) + 
+                      (imageCounts.S2 * 10) + 
+                      (orderType === "magnetic" ? (imageCounts.S0 + imageCounts.S1 + imageCounts.S2) * 3 : 0)
+                    ).toFixed(2)}€
+                  </p>
                 </div>
 
                 <div className="space-y-4">
@@ -597,7 +737,6 @@ export const GridPuzzle = () => {
                     onChange={(e) => setOrderForm(prev => ({ ...prev, email: e.target.value }))}
                     className="w-full px-4 py-2 border rounded-md"
                   />
-                    <p>napomena: ispuniti sva polja</p>
                 </div>
 
                 <motion.button
@@ -606,7 +745,7 @@ export const GridPuzzle = () => {
                   onClick={handleSubmitOrder}
                   className="w-full px-6 py-2 bg-neutral-900 text-white rounded-md font-medium mt-4"
                 >
-                  pošalji
+                  Pošalji
                 </motion.button>
               </DialogDescription>
             </DialogHeader>
