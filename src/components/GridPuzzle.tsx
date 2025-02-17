@@ -406,7 +406,7 @@ export const GridPuzzle = () => {
           className="fixed top-[10px] z-[50] w-[200px]"
         />
 
-        <div className="flex items-center gap-2 fixed top-[55px] z-20">
+        <div className="flex items-center gap-1 fixed top-[25px] z-20">
           <label className="text-sm font-medium">Š</label>
           <input
             type="text"
