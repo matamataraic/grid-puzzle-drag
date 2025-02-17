@@ -407,7 +407,7 @@ export const GridPuzzle = () => {
           className="fixed top-[10px] z-[50] w-[200px]"
         />
 
-        <div className="flex items-center gap-4 fixed top-[55px] z-20">
+        <div className="flex items-center gap-4 fixed top-[120px] z-20">
           <label className="text-sm font-medium">Š</label>
           <input
             type="text"
@@ -427,7 +427,7 @@ export const GridPuzzle = () => {
           />
         </div>
 
-        <div className="fixed top-[115px] z-20 flex items-center gap-4">
+        <div className="fixed top-[165px] z-20 flex items-center gap-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -483,7 +483,7 @@ export const GridPuzzle = () => {
               gridTemplateColumns: `repeat(${horizontal}, 50px)`,
               gridTemplateRows: `repeat(${vertical}, 50px)`,
               position: 'fixed',
-              top: '175px',
+              top: '185px',
               maxHeight: 'calc(100vh - 350px)',
               maxWidth: 'calc(100vw - 40px)',
               borderWidth: '1px',
