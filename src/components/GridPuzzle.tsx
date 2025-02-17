@@ -426,7 +426,7 @@ export const GridPuzzle = () => {
           />
         </div>
 
-        <div className="fixed top-[115px] z-20 flex items-center gap-4">
+        <div className="fixed top-[95px] z-20 flex items-center gap-2">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
