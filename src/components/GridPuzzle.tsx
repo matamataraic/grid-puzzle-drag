@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Info, RotateCcw, Save } from 'lucide-react';
+import { Info, RotateCcw, Save, Eye } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import {
   Dialog,
@@ -54,6 +54,12 @@ export const GridPuzzle = () => {
     phone: '',
     email: '',
   });
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewImages] = useState([
+    'https://i.imgur.com/BDxr2FI.jpeg',
+    'https://i.imgur.com/CCh6wA9.jpeg',
+    'https://i.imgur.com/VlHZQdw.jpeg'
+  ]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -305,12 +311,20 @@ export const GridPuzzle = () => {
 
   const handleSave = async () => {
     if (gridRef.current) {
-      const canvas = await html2canvas(gridRef.current);
-      const image = canvas.toDataURL('image/jpeg');
-      const link = document.createElement('a');
-      link.href = image;
-      link.download = `${getOrderTitle()}.jpg`;
-      link.click();
+      try {
+        const canvas = await html2canvas(gridRef.current, {
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#FFFFFF',
+        });
+        const image = canvas.toDataURL('image/jpeg', 1.0);
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = `${getOrderTitle()}.jpg`;
+        link.click();
+      } catch (error) {
+        console.error('Error saving image:', error);
+      }
     }
   };
 
@@ -387,10 +401,9 @@ export const GridPuzzle = () => {
 
       <div className="flex flex-col items-center pt-[20px] relative">
         <img 
-          src={headerImage} 
+          src="https://i.imgur.com/R4Hgigd.jpeg" 
           alt="Header"
-          className="w-[400px] mb-5"
-          style={{ marginTop: '20px' }}
+          className="fixed top-[20px] z-[50] w-[400px]"
         />
 
         <div className="flex items-center gap-4 fixed top-[45px] z-20">
@@ -436,9 +449,9 @@ export const GridPuzzle = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleRandom}
-            className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+            className="px-4 py-2 bg-neutral-900 text-white rounded-md font-medium"
           >
-            Random
+            Rndm
           </motion.button>
 
           <motion.button
@@ -535,6 +548,14 @@ export const GridPuzzle = () => {
               className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
             >
               Order
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowPreview(true)}
+              className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+            >
+              <Eye className="w-4 h-4" />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -749,6 +770,42 @@ export const GridPuzzle = () => {
                 </motion.button>
               </DialogDescription>
             </DialogHeader>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={showPreview} onOpenChange={setShowPreview}>
+          <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-auto">
+            <DialogHeader>
+              <DialogTitle>Preview</DialogTitle>
+            </DialogHeader>
+            <div 
+              className="relative border border-BLACK bg-white"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(${horizontal}, 50px)`,
+                gridTemplateRows: `repeat(${vertical}, 50px)`,
+                minWidth: 'min-content',
+              }}
+            >
+              {gridTiles.map((row, y) =>
+                row.map((tile, x) => (
+                  <div
+                    key={`${y}-${x}`}
+                    className="border border-white w-[50px] h-[50px]"
+                    style={{ backgroundColor: 'BLACK' }}
+                  >
+                    {tile && (
+                      <img
+                        src={previewImages[tile.imageIndex]}
+                        className="w-full h-full object-cover"
+                        style={{ transform: `rotate(${tile.rotation}deg)` }}
+                        alt={`Preview tile ${y}-${x}`}
+                      />
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
           </DialogContent>
         </Dialog>
       </div>
