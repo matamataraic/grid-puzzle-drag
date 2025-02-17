@@ -396,17 +396,17 @@ export const GridPuzzle = () => {
 
   return (
     <div className="min-h-screen bg-neutral-50 fixed w-full overflow-auto">
-      <div className="fixed top-0 left-0 right-0 h-[165px] bg-neutral-50 z-[5]" />
+      <div className="fixed top-0 left-0 right-0 h-[175px] bg-neutral-50 z-[5]" />
       <div className="fixed bottom-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
 
       <div className="flex flex-col items-center pt-[20px] relative">
         <img 
           src="https://i.imgur.com/R4Hgigd.jpeg" 
           alt="Header"
-          className="fixed top-[20px] z-[50] w-[400px]"
+          className="fixed top-[10px] z-[50] w-[400px]"
         />
 
-        <div className="flex items-center gap-4 fixed top-[45px] z-20">
+        <div className="flex items-center gap-4 fixed top-[55px] z-20">
           <label className="text-sm font-medium">Š</label>
           <input
             type="text"
@@ -426,7 +426,7 @@ export const GridPuzzle = () => {
           />
         </div>
 
-        <div className="fixed top-[105px] z-20 flex items-center gap-4">
+        <div className="fixed top-[115px] z-20 flex items-center gap-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -482,8 +482,8 @@ export const GridPuzzle = () => {
               gridTemplateColumns: `repeat(${horizontal}, 50px)`,
               gridTemplateRows: `repeat(${vertical}, 50px)`,
               position: 'fixed',
-              top: '165px',
-              maxHeight: 'calc(100vh - 340px)',
+              top: '175px',
+              maxHeight: 'calc(100vh - 350px)',
               maxWidth: 'calc(100vw - 40px)',
               borderWidth: '1px',
               borderColor: 'white'
@@ -544,18 +544,18 @@ export const GridPuzzle = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={handleOrderClick}
-              className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
-            >
-              Order
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               onClick={() => setShowPreview(true)}
               className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
             >
               <Eye className="w-4 h-4" />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleOrderClick}
+              className="px-6 py-2 bg-neutral-900 text-white rounded-md font-medium"
+            >
+              Order
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -778,33 +778,35 @@ export const GridPuzzle = () => {
             <DialogHeader>
               <DialogTitle>Preview</DialogTitle>
             </DialogHeader>
-            <div 
-              className="relative border border-BLACK bg-white"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: `repeat(${horizontal}, 50px)`,
-                gridTemplateRows: `repeat(${vertical}, 50px)`,
-                minWidth: 'min-content',
-              }}
-            >
-              {gridTiles.map((row, y) =>
-                row.map((tile, x) => (
-                  <div
-                    key={`${y}-${x}`}
-                    className="border border-white w-[50px] h-[50px]"
-                    style={{ backgroundColor: 'BLACK' }}
-                  >
-                    {tile && (
-                      <img
-                        src={previewImages[tile.imageIndex]}
-                        className="w-full h-full object-cover"
-                        style={{ transform: `rotate(${tile.rotation}deg)` }}
-                        alt={`Preview tile ${y}-${x}`}
-                      />
-                    )}
-                  </div>
-                ))
-              )}
+            <div className="flex justify-center items-center">
+              <div 
+                className="relative border border-BLACK bg-white"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: `repeat(${horizontal}, 50px)`,
+                  gridTemplateRows: `repeat(${vertical}, 50px)`,
+                  minWidth: 'min-content',
+                }}
+              >
+                {gridTiles.map((row, y) =>
+                  row.map((tile, x) => (
+                    <div
+                      key={`${y}-${x}`}
+                      className="border border-white w-[50px] h-[50px]"
+                      style={{ backgroundColor: 'BLACK' }}
+                    >
+                      {tile && (
+                        <img
+                          src={previewImages[tile.imageIndex]}
+                          className="w-full h-full object-cover"
+                          style={{ transform: `rotate(${tile.rotation}deg)` }}
+                          alt={`Preview tile ${y}-${x}`}
+                        />
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           </DialogContent>
         </Dialog>
