@@ -617,8 +617,9 @@ export const GridPuzzle = () => {
                 <p>• ukloni pločicu dvostrukim klikom</p>
                 <p>• "clear" zadrži raspored polja, pobriši pločice</p>
                 <p>• "restart" kreni od nule</p>
-                <p>• "eye icon" za realan pregled kompozicije</p>
-                <p>• "save icon" za pohranu trenutne kompozicije</p>
+                <p> ***dolje*** </p>
+                <p> -OKO- za pregled kompozicije</p>
+                <p> -DISKETA- icon za pohranu trenutne kompozicije</p>
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
