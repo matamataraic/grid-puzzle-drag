@@ -609,13 +609,16 @@ export const GridPuzzle = () => {
             <DialogHeader>
               <DialogTitle>kako</DialogTitle>
               <DialogDescription className="text-left space-y-2">
-                <p>• zadaj broj polja u širinu (š) i visinu (v) (jedno polje 15x15cm)</p>
+                <p>• zadaj broj polja u širinu (š) i visinu (v) (jedno polje 15x15cm), klikni "start"</p>
+                <p>• "Rndm" za slučajno postavljanje kompozicije</p>
                 <p>• crno polje = prazno polje</p>
                 <p>• stvori svoju kompoziciju povlačenjem odabrane pločice na odabrano polje ili dvostrukim klikom na pločicu popuni prvo prazno polje</p>
                 <p>• promijeni orijentaciju pločice jednim klikom</p>
                 <p>• ukloni pločicu dvostrukim klikom</p>
                 <p>• "clear" zadrži raspored polja, pobriši pločice</p>
                 <p>• "restart" kreni od nule</p>
+                <p>• "eye icon" za realan pregled kompozicije</p>
+                <p>• "save icon" za pohranu trenutne kompozicije</p>
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
