@@ -403,7 +403,7 @@ export const GridPuzzle = () => {
         <img 
           src="https://i.imgur.com/R4Hgigd.jpeg" 
           alt="Header"
-          className="fixed top-[10px] z-[50] w-[400px]"
+          className="fixed top-[10px] z-[50] w-[200px]"
         />
 
         <div className="flex items-center gap-4 fixed top-[55px] z-20">
