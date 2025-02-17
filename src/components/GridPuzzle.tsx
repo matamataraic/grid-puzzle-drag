@@ -619,6 +619,7 @@ export const GridPuzzle = () => {
                 <p>• "restart" kreni od nule</p>
                 <p> ***dolje*** </p>
                 <p> -OKO- za pregled kompozicije</p>
+                <p>• "order" pokreni narudžbu</p>
                 <p> -DISKETA- icon za pohranu trenutne kompozicije</p>
               </DialogDescription>
             </DialogHeader>
