@@ -66,18 +66,18 @@ export const GridPuzzle = () => {
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
         const newTiles: TilePosition[] = [];
         for (let imageIndex = 0; imageIndex < images.length; imageIndex++) {
-          for (let i = 0; i < 10; i++) {
+          for (let i = 0; i < 15; i++) {
             newTiles.push({
               id: `tile-${Date.now()}-${imageIndex}-${i}`,
               x: Math.random() * (window.innerWidth - 100),
-              y: Math.random() * (document.documentElement.scrollHeight + 500),
+              y: Math.random() * (document.documentElement.scrollHeight + window.innerHeight * 0.3),
               rotation: Math.floor(Math.random() * 4) * 90,
               imageIndex,
             });
           }
         }
         setTiles(prev => [...prev, ...newTiles]);
-        document.documentElement.style.minHeight = `${document.documentElement.scrollHeight + 500}px`;
+        document.documentElement.style.minHeight = `${document.documentElement.scrollHeight + window.innerHeight * 0.3}px`;
       }
     };
 
@@ -145,18 +145,15 @@ export const GridPuzzle = () => {
     if (isNaN(h) || isNaN(v) || h <= 0 || v <= 0) return;
 
     if (isGridGenerated && gridTiles.length > 0) {
-      const oldRows = gridTiles.length;
-      const oldCols = gridTiles[0].length;
-      
+      const oldGrid = [...gridTiles];
       const newGrid = Array(v).fill(null).map((_, rowIndex) => 
         Array(h).fill(null).map((_, colIndex) => {
-          if (rowIndex < oldRows && colIndex < oldCols) {
-            return gridTiles[rowIndex][colIndex];
+          if (rowIndex < oldGrid.length && colIndex < oldGrid[0].length) {
+            return oldGrid[rowIndex][colIndex];
           }
           return null;
         })
       );
-      
       setGridTiles(newGrid);
     } else {
       const newGrid = Array(v).fill(null).map(() => Array(h).fill(null));
@@ -395,16 +392,23 @@ export const GridPuzzle = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 fixed w-full overflow-auto">
-      <div className="fixed top-0 left-0 right-0 h-[155px] bg-neutral-50 z-[5]" />
-      <div className="fixed bottom-0 left-0 right-0 h-[190px] bg-neutral-50 z-[5]" />
+    <div className="min-h-screen bg-neutral-50 w-full overflow-auto">
+      <div className="fixed top-0 left-0 right-0 h-[175px] bg-neutral-50 z-[5]" />
+      <div className="fixed bottom-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
 
       <div className="flex flex-col items-center pt-[20px] relative">
-        <img 
-          src="https://i.imgur.com/R4Hgigd.jpeg" 
-          alt="Header"
-          className="fixed top-[10px] z-[50] w-[200px]"
-        />
+        <a 
+          href="https://www.instagram.com/planerai/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="fixed top-[10px] z-[50]"
+        >
+          <img 
+            src="https://i.imgur.com/R4Hgigd.jpeg" 
+            alt="Header"
+            className="w-[200px]"
+          />
+        </a>
 
         <div className="flex items-center gap-2 fixed top-[45px] z-20">
           <label className="text-sm font-medium">Š</label>
