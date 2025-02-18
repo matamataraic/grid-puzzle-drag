@@ -788,18 +788,19 @@ export const GridPuzzle = () => {
         </Dialog>
 
         <Dialog open={showPreview} onOpenChange={setShowPreview}>
-          <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-auto">
+          <DialogContent className="max-w-[95vw] max-h-[95vh] p-4 overflow-auto">
             <DialogHeader>
               <DialogTitle>Preview</DialogTitle>
             </DialogHeader>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center p-2">
               <div 
-                className="relative border border-BLACK bg-white"
+                className="relative border border-BLACK bg-white transform scale-[0.8]"
                 style={{
                   display: 'grid',
                   gridTemplateColumns: `repeat(${horizontal}, 50px)`,
                   gridTemplateRows: `repeat(${vertical}, 50px)`,
                   minWidth: 'min-content',
+                  transformOrigin: 'center',
                 }}
               >
                 {gridTiles.map((row, y) =>
