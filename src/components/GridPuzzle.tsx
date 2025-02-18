@@ -66,18 +66,18 @@ export const GridPuzzle = () => {
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
         const newTiles: TilePosition[] = [];
         for (let imageIndex = 0; imageIndex < images.length; imageIndex++) {
-          for (let i = 0; i < 15; i++) {
+          for (let i = 0; i < 10; i++) {
             newTiles.push({
               id: `tile-${Date.now()}-${imageIndex}-${i}`,
               x: Math.random() * (window.innerWidth - 100),
-              y: Math.random() * (document.documentElement.scrollHeight + window.innerHeight * 0.3),
+              y: Math.random() * (document.documentElement.scrollHeight + 500),
               rotation: Math.floor(Math.random() * 4) * 90,
               imageIndex,
             });
           }
         }
         setTiles(prev => [...prev, ...newTiles]);
-        document.documentElement.style.minHeight = `${document.documentElement.scrollHeight + window.innerHeight * 0.3}px`;
+        document.documentElement.style.minHeight = `${document.documentElement.scrollHeight + 500}px`;
       }
     };
 
@@ -782,44 +782,4 @@ export const GridPuzzle = () => {
           </DialogContent>
         </Dialog>
 
-        <Dialog open={showPreview} onOpenChange={setShowPreview}>
-          <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-auto">
-            <DialogHeader>
-              <DialogTitle>Preview</DialogTitle>
-            </DialogHeader>
-            <div className="flex justify-center items-center">
-              <div 
-                className="relative border border-BLACK bg-white"
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: `repeat(${horizontal}, 50px)`,
-                  gridTemplateRows: `repeat(${vertical}, 50px)`,
-                  minWidth: 'min-content',
-                }}
-              >
-                {gridTiles.map((row, y) =>
-                  row.map((tile, x) => (
-                    <div
-                      key={`${y}-${x}`}
-                      className="border border-white w-[50px] h-[50px]"
-                      style={{ backgroundColor: 'BLACK' }}
-                    >
-                      {tile && (
-                        <img
-                          src={previewImages[tile.imageIndex]}
-                          className="w-full h-full object-cover"
-                          style={{ transform: `rotate(${tile.rotation}deg)` }}
-                          alt={`Preview tile ${y}-${x}`}
-                        />
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-    </div>
-  );
-};
+        <Dialog open={showPreview} onOpenChange={
