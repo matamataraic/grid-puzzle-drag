@@ -618,6 +618,7 @@ export const GridPuzzle = () => {
                 <p>S0 prazna pločica</p>
                 <p>S1 pločica s ravnim linijama</p>
                 <p>S2 pločica sa zaobljenim linijama</p>
+                <p> </p>
                 <p>• zadaj broj polja u širinu (š) i visinu (v) (jedno polje 15x15cm), klikni "start"</p>
                 <p>• "Rndm" za slučajno postavljanje kompozicije</p>
                 <p>• crno polje = prazno polje</p>
@@ -626,6 +627,7 @@ export const GridPuzzle = () => {
                 <p>• ukloni pločicu dvostrukim klikom</p>
                 <p>• "clear" zadrži raspored polja, pobriši pločice</p>
                 <p>• "restart" kreni od nule</p>
+                <p> </p>
                 <p> ***dolje*** </p>
                 <p> -OKO- za pregled kompozicije</p>
                 <p>• "order" pokreni narudžbu</p>
