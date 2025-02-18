@@ -614,6 +614,7 @@ export const GridPuzzle = () => {
               <DialogTitle>info</DialogTitle>
               <DialogDescription className="text-left space-y-2">
                 <p>eco friendly pločice 15x15cm s 3d uzorkom od smjese recikliranog papira</p>
+                <p>***svaka*** pločica je handmade i zbog toga jedinstvena i drukčija od prethodne</p>
                 <p>S0 prazna pločica   S1 pločica s ravnim linijama   S2 pločica sa zaobljenim linijama</p>
                 <p>• zadaj broj polja u širinu (š) i visinu (v) (jedno polje 15x15cm), klikni "start"</p>
                 <p>• "Rndm" za slučajno postavljanje kompozicije</p>
