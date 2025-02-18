@@ -62,36 +62,24 @@ export const GridPuzzle = () => {
   ]);
 
   useEffect(() => {
-    const loadMoreTiles = () => {
-      const newTiles: TilePosition[] = [];
-      for (let imageIndex = 0; imageIndex < images.length; imageIndex++) {
-        for (let i = 0; i < 10; i++) {
-          const randomY = Math.random() * (window.innerHeight) + document.documentElement.scrollHeight;
-          newTiles.push({
-            id: `tile-${Date.now()}-${imageIndex}-${i}`,
-            x: Math.random() * (window.innerWidth - 100),
-            y: randomY,
-            rotation: Math.floor(Math.random() * 4) * 90,
-            imageIndex,
-          });
-        }
-      }
-      setTiles(prev => [...prev, ...newTiles]);
-    };
-
     const handleScroll = () => {
-      const scrolledToBottom = 
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 500;
-      
-      if (scrolledToBottom) {
-        loadMoreTiles();
-        document.documentElement.style.minHeight = 
-          `${document.documentElement.scrollHeight + window.innerHeight}px`;
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
+        const newTiles: TilePosition[] = [];
+        for (let imageIndex = 0; imageIndex < images.length; imageIndex++) {
+          for (let i = 0; i < 10; i++) {
+            newTiles.push({
+              id: `tile-${Date.now()}-${imageIndex}-${i}`,
+              x: Math.random() * (window.innerWidth - 100),
+              y: Math.random() * (document.documentElement.scrollHeight + 500),
+              rotation: Math.floor(Math.random() * 4) * 90,
+              imageIndex,
+            });
+          }
+        }
+        setTiles(prev => [...prev, ...newTiles]);
+        document.documentElement.style.minHeight = `${document.documentElement.scrollHeight + 500}px`;
       }
     };
-
-    loadMoreTiles();
-    document.documentElement.style.minHeight = `${window.innerHeight * 2}px`;
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -404,9 +392,9 @@ export const GridPuzzle = () => {
   };
 
   return (
-    <div className="min-h-screen w-full overflow-auto relative">
-      <div className="fixed top-0 left-0 right-0 h-[175px] bg-neutral-50 z-[5]" />
-      <div className="fixed bottom-0 left-0 right-0 h-[125px] bg-neutral-50 z-[5]" />
+    <div className="min-h-screen bg-neutral-50 w-full overflow-auto">
+      <div className="fixed top-0 left-0 right-0 h-[155px] bg-neutral-50 z-[5]" />
+      <div className="fixed bottom-0 left-0 right-0 h-[190px] bg-neutral-50 z-[5]" />
 
       <div className="flex flex-col items-center pt-[20px] relative">
         <a 
