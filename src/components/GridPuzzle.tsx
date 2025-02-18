@@ -782,4 +782,44 @@ export const GridPuzzle = () => {
           </DialogContent>
         </Dialog>
 
-        <Dialog open={showPreview} onOpenChange={
+        <Dialog open={showPreview} onOpenChange={setShowPreview}>
+          <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-auto">
+            <DialogHeader>
+              <DialogTitle>Preview</DialogTitle>
+            </DialogHeader>
+            <div className="flex justify-center items-center">
+              <div 
+                className="relative border border-BLACK bg-white"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: `repeat(${horizontal}, 50px)`,
+                  gridTemplateRows: `repeat(${vertical}, 50px)`,
+                  minWidth: 'min-content',
+                }}
+              >
+                {gridTiles.map((row, y) =>
+                  row.map((tile, x) => (
+                    <div
+                      key={`${y}-${x}`}
+                      className="border border-white w-[50px] h-[50px]"
+                      style={{ backgroundColor: 'BLACK' }}
+                    >
+                      {tile && (
+                        <img
+                          src={previewImages[tile.imageIndex]}
+                          className="w-full h-full object-cover"
+                          style={{ transform: `rotate(${tile.rotation}deg)` }}
+                          alt={`Preview tile ${y}-${x}`}
+                        />
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </div>
+  );
+};
