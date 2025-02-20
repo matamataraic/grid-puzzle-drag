@@ -309,11 +309,27 @@ export const GridPuzzle = () => {
   const handleSave = async () => {
     if (gridRef.current) {
       try {
+        // Set a temporary style to ensure the entire grid is rendered
+        const originalStyle = gridRef.current.style.maxHeight;
+        gridRef.current.style.maxHeight = 'none';
+        gridRef.current.style.position = 'relative';
+        
+        // Wait for next frame to ensure styles are applied
+        await new Promise(resolve => requestAnimationFrame(resolve));
+
         const canvas = await html2canvas(gridRef.current, {
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#FFFFFF',
+          width: parseInt(horizontal) * 50,
+          height: parseInt(vertical) * 50,
+          scale: 2, // Increase quality
         });
+
+        // Restore original styles
+        gridRef.current.style.maxHeight = originalStyle;
+        gridRef.current.style.position = 'fixed';
+
         const image = canvas.toDataURL('image/jpeg', 1.0);
         const link = document.createElement('a');
         link.href = image;
@@ -758,77 +774,4 @@ export const GridPuzzle = () => {
                     type="text"
                     placeholder="Država"
                     value={orderForm.country}
-                    onChange={(e) => setOrderForm(prev => ({ ...prev, country: e.target.value }))}
-                    className="w-full px-4 py-2 border rounded-md"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Telefon"
-                    value={orderForm.phone}
-                    onChange={(e) => setOrderForm(prev => ({ ...prev, phone: e.target.value }))}
-                    className="w-full px-4 py-2 border rounded-md"
-                  />
-                  <input
-                    type="email"
-                    placeholder="E-mail"
-                    value={orderForm.email}
-                    onChange={(e) => setOrderForm(prev => ({ ...prev, email: e.target.value }))}
-                    className="w-full px-4 py-2 border rounded-md"
-                  />
-                </div>
-
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleSubmitOrder}
-                  className="w-full px-6 py-2 bg-neutral-900 text-white rounded-md font-medium mt-4"
-                >
-                  Pošalji
-                </motion.button>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-
-        <Dialog open={showPreview} onOpenChange={setShowPreview}>
-          <DialogContent className="max-w-[95vw] max-h-[95vh] p-4 overflow-auto">
-            <DialogHeader>
-              <DialogTitle>Preview</DialogTitle>
-            </DialogHeader>
-            <div className="flex justify-center items-center p-2">
-              <div 
-                className="relative border border-BLACK bg-white transform scale-[0.8]"
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: `repeat(${horizontal}, 50px)`,
-                  gridTemplateRows: `repeat(${vertical}, 50px)`,
-                  minWidth: 'min-content',
-                  transformOrigin: 'center',
-                }}
-              >
-                {gridTiles.map((row, y) =>
-                  row.map((tile, x) => (
-                    <div
-                      key={`${y}-${x}`}
-                      className="border border-white w-[50px] h-[50px]"
-                      style={{ backgroundColor: 'BLACK' }}
-                    >
-                      {tile && (
-                        <img
-                          src={previewImages[tile.imageIndex]}
-                          className="w-full h-full object-cover"
-                          style={{ transform: `rotate(${tile.rotation}deg)` }}
-                          alt={`Preview tile ${y}-${x}`}
-                        />
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-    </div>
-  );
-};
+                    onChange={(e) => setOrderForm(
