@@ -315,7 +315,9 @@ export const GridPuzzle = () => {
           overflow: gridRef.current.style.overflow,
           transform: gridRef.current.style.transform,
           width: gridRef.current.style.width,
-          height: gridRef.current.style.height
+          height: gridRef.current.style.height,
+          opacity: gridRef.current.style.opacity,
+          zIndex: gridRef.current.style.zIndex
         };
 
         gridRef.current.style.maxHeight = 'none';
@@ -324,8 +326,19 @@ export const GridPuzzle = () => {
         gridRef.current.style.transform = 'none';
         gridRef.current.style.width = `${parseInt(horizontal) * 50}px`;
         gridRef.current.style.height = `${parseInt(vertical) * 50}px`;
+        gridRef.current.style.opacity = '1';
+        gridRef.current.style.zIndex = '9999';
         
-        await new Promise(resolve => requestAnimationFrame(resolve));
+        const imagePromises = Array.from(gridRef.current.getElementsByTagName('img')).map(img => {
+          if (img.complete) return Promise.resolve();
+          return new Promise(resolve => {
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+        });
+
+        await Promise.all(imagePromises);
+        await new Promise(resolve => setTimeout(resolve, 100));
 
         const canvas = await html2canvas(gridRef.current, {
           useCORS: true,
@@ -335,20 +348,23 @@ export const GridPuzzle = () => {
           height: parseInt(vertical) * 50,
           scale: 2,
           logging: true,
-          windowWidth: parseInt(horizontal) * 50,
-          windowHeight: parseInt(vertical) * 50,
-          x: 0,
-          y: 0,
-          scrollX: 0,
-          scrollY: 0
+          onclone: (clonedDoc) => {
+            const clonedElement = clonedDoc.getElementById(gridRef.current?.id || '');
+            if (clonedElement) {
+              Array.from(clonedElement.getElementsByTagName('img')).forEach(img => {
+                img.style.opacity = '1';
+                img.style.visibility = 'visible';
+              });
+            }
+          },
+          imageTimeout: 0,
+          removeContainer: false,
+          ignoreElements: (element) => {
+            return !gridRef.current?.contains(element) && element !== gridRef.current;
+          }
         });
 
-        gridRef.current.style.maxHeight = originalStyle.maxHeight;
-        gridRef.current.style.position = originalStyle.position;
-        gridRef.current.style.overflow = originalStyle.overflow;
-        gridRef.current.style.transform = originalStyle.transform;
-        gridRef.current.style.width = originalStyle.width;
-        gridRef.current.style.height = originalStyle.height;
+        Object.assign(gridRef.current.style, originalStyle);
 
         const image = canvas.toDataURL('image/jpeg', 1.0);
         const link = document.createElement('a');
