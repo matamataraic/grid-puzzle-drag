@@ -413,7 +413,7 @@ export const GridPuzzle = () => {
     Ukupno: ${grandTotal.toFixed(2)}€
     `;
 
-    const mailtoLink = `mailto:matamataraic@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoLink = `mailto:comingsoon@planerai.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoLink;
   };
 
