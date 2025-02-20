@@ -309,11 +309,67 @@ export const GridPuzzle = () => {
   const handleSave = async () => {
     if (gridRef.current) {
       try {
-        const canvas = await html2canvas(gridRef.current, {
+        const tempContainer = document.createElement('div');
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.left = '-9999px';
+        tempContainer.style.top = '-9999px';
+        document.body.appendChild(tempContainer);
+
+        const gridCopy = document.createElement('div');
+        gridCopy.style.display = 'grid';
+        gridCopy.style.gridTemplateColumns = `repeat(${horizontal}, 50px)`;
+        gridCopy.style.gridTemplateRows = `repeat(${vertical}, 50px)`;
+        gridCopy.style.width = `${parseInt(horizontal) * 50}px`;
+        gridCopy.style.height = `${parseInt(vertical) * 50}px`;
+        gridCopy.style.border = '1px solid white';
+        gridCopy.style.backgroundColor = 'black';
+
+        gridTiles.forEach((row, y) => {
+          row.forEach((tile, x) => {
+            const cell = document.createElement('div');
+            cell.style.width = '50px';
+            cell.style.height = '50px';
+            cell.style.border = '1px solid white';
+            cell.style.backgroundColor = 'black';
+
+            if (tile) {
+              const img = document.createElement('img');
+              img.src = images[tile.imageIndex];
+              img.style.width = '100%';
+              img.style.height = '100%';
+              img.style.objectFit = 'cover';
+              img.style.transform = `rotate(${tile.rotation}deg)`;
+              cell.appendChild(img);
+            }
+
+            gridCopy.appendChild(cell);
+          });
+        });
+
+        tempContainer.appendChild(gridCopy);
+
+        await Promise.all(
+          Array.from(gridCopy.getElementsByTagName('img')).map(
+            img => new Promise((resolve) => {
+              if (img.complete) resolve(true);
+              img.onload = () => resolve(true);
+              img.onerror = () => resolve(false);
+            })
+          )
+        );
+
+        const canvas = await html2canvas(gridCopy, {
           useCORS: true,
           allowTaint: true,
-          backgroundColor: '#FFFFFF',
+          backgroundColor: 'black',
+          scale: 2,
+          logging: false,
+          imageTimeout: 0,
+          removeContainer: false
         });
+
+        document.body.removeChild(tempContainer);
+
         const image = canvas.toDataURL('image/jpeg', 1.0);
         const link = document.createElement('a');
         link.href = image;
