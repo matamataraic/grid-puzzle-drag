@@ -317,7 +317,11 @@ export const GridPuzzle = () => {
           width: gridRef.current.style.width,
           height: gridRef.current.style.height,
           opacity: gridRef.current.style.opacity,
-          zIndex: gridRef.current.style.zIndex
+          zIndex: gridRef.current.style.zIndex,
+          border: gridRef.current.style.border,
+          borderColor: gridRef.current.style.borderColor,
+          borderStyle: gridRef.current.style.borderStyle,
+          borderWidth: gridRef.current.style.borderWidth
         };
 
         gridRef.current.style.maxHeight = 'none';
@@ -328,6 +332,10 @@ export const GridPuzzle = () => {
         gridRef.current.style.height = `${parseInt(vertical) * 50}px`;
         gridRef.current.style.opacity = '1';
         gridRef.current.style.zIndex = '9999';
+        gridRef.current.style.border = '1px solid black';
+        gridRef.current.style.borderStyle = 'solid';
+        gridRef.current.style.borderWidth = '1px';
+        gridRef.current.style.borderColor = 'black';
         
         const imagePromises = Array.from(gridRef.current.getElementsByTagName('img')).map(img => {
           if (img.complete) return Promise.resolve();
@@ -355,6 +363,10 @@ export const GridPuzzle = () => {
                 img.style.opacity = '1';
                 img.style.visibility = 'visible';
               });
+              clonedElement.style.border = '1px solid black';
+              clonedElement.style.borderStyle = 'solid';
+              clonedElement.style.borderWidth = '1px';
+              clonedElement.style.borderColor = 'black';
             }
           },
           imageTimeout: 0,
