@@ -309,9 +309,21 @@ export const GridPuzzle = () => {
   const handleSave = async () => {
     if (gridRef.current) {
       try {
-        const originalStyle = gridRef.current.style.maxHeight;
+        const originalStyle = {
+          maxHeight: gridRef.current.style.maxHeight,
+          position: gridRef.current.style.position,
+          overflow: gridRef.current.style.overflow,
+          transform: gridRef.current.style.transform,
+          width: gridRef.current.style.width,
+          height: gridRef.current.style.height
+        };
+
         gridRef.current.style.maxHeight = 'none';
         gridRef.current.style.position = 'relative';
+        gridRef.current.style.overflow = 'visible';
+        gridRef.current.style.transform = 'none';
+        gridRef.current.style.width = `${parseInt(horizontal) * 50}px`;
+        gridRef.current.style.height = `${parseInt(vertical) * 50}px`;
         
         await new Promise(resolve => requestAnimationFrame(resolve));
 
@@ -322,10 +334,21 @@ export const GridPuzzle = () => {
           width: parseInt(horizontal) * 50,
           height: parseInt(vertical) * 50,
           scale: 2,
+          logging: true,
+          windowWidth: parseInt(horizontal) * 50,
+          windowHeight: parseInt(vertical) * 50,
+          x: 0,
+          y: 0,
+          scrollX: 0,
+          scrollY: 0
         });
 
-        gridRef.current.style.maxHeight = originalStyle;
-        gridRef.current.style.position = 'fixed';
+        gridRef.current.style.maxHeight = originalStyle.maxHeight;
+        gridRef.current.style.position = originalStyle.position;
+        gridRef.current.style.overflow = originalStyle.overflow;
+        gridRef.current.style.transform = originalStyle.transform;
+        gridRef.current.style.width = originalStyle.width;
+        gridRef.current.style.height = originalStyle.height;
 
         const image = canvas.toDataURL('image/jpeg', 1.0);
         const link = document.createElement('a');
