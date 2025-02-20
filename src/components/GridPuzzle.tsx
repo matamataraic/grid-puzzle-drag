@@ -309,24 +309,11 @@ export const GridPuzzle = () => {
   const handleSave = async () => {
     if (gridRef.current) {
       try {
-        const originalStyle = gridRef.current.style.maxHeight;
-        gridRef.current.style.maxHeight = 'none';
-        gridRef.current.style.position = 'relative';
-        
-        await new Promise(resolve => requestAnimationFrame(resolve));
-
         const canvas = await html2canvas(gridRef.current, {
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#FFFFFF',
-          width: parseInt(horizontal) * 50,
-          height: parseInt(vertical) * 50,
-          scale: 2,
         });
-
-        gridRef.current.style.maxHeight = originalStyle;
-        gridRef.current.style.position = 'fixed';
-
         const image = canvas.toDataURL('image/jpeg', 1.0);
         const link = document.createElement('a');
         link.href = image;
