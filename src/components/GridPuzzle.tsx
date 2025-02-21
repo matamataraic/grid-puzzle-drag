@@ -201,16 +201,14 @@ export const GridPuzzle = () => {
         setGridTiles(updatedGrid);
         setTiles(updatedTiles);
         
-        setTimeout(() => {
-          const newTile: TilePosition = {
-            id: `tile-${Date.now()}`,
-            x: draggedTile.x,
-            y: draggedTile.y,
-            rotation: Math.floor(Math.random() * 4) * 90,
-            imageIndex: Math.floor(Math.random() * images.length),
-          };
-          setTiles(prev => [...prev, newTile]);
-        }, 100);
+        const newTile: TilePosition = {
+          id: `tile-${Date.now()}`,
+          x: draggedTile.x,
+          y: draggedTile.y,
+          rotation: Math.floor(Math.random() * 4) * 90,
+          imageIndex: Math.floor(Math.random() * images.length),
+        };
+        setTiles(prev => [...prev, newTile]);
       } else {
         setTiles(prev => [...prev]);
       }
@@ -219,11 +217,21 @@ export const GridPuzzle = () => {
       const dropY = event.clientY;
       
       if (draggedTile) {
-        const updatedTiles = tiles.map(t => 
-          t.id === tileId 
-            ? { ...t, x: dropX - 25, y: dropY - 25 }
-            : t
-        );
+        const newTile: TilePosition = {
+          id: `tile-${Date.now()}`,
+          x: draggedTile.x,
+          y: draggedTile.y,
+          rotation: Math.floor(Math.random() * 4) * 90,
+          imageIndex: Math.floor(Math.random() * images.length),
+        };
+        
+        const updatedTiles = tiles
+          .filter(t => t.id !== tileId)
+          .concat([
+            { ...draggedTile, x: dropX - 25, y: dropY - 25 },
+            newTile
+          ]);
+        
         setTiles(updatedTiles);
       }
     }
@@ -260,16 +268,14 @@ export const GridPuzzle = () => {
       setGridTiles(updatedGrid);
       setTiles(prev => prev.filter(t => t.id !== tileId));
       
-      setTimeout(() => {
-        const newTile: TilePosition = {
-          id: `tile-${Date.now()}`,
-          x: tile.x,
-          y: tile.y,
-          rotation: Math.floor(Math.random() * 4) * 90,
-          imageIndex: Math.floor(Math.random() * images.length),
-        };
-        setTiles(prev => [...prev, newTile]);
-      }, 100);
+      const newTile: TilePosition = {
+        id: `tile-${Date.now()}`,
+        x: tile.x,
+        y: tile.y,
+        rotation: Math.floor(Math.random() * 4) * 90,
+        imageIndex: Math.floor(Math.random() * images.length),
+      };
+      setTiles(prev => [...prev, newTile]);
     }
   };
 
