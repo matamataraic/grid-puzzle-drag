@@ -869,7 +869,7 @@ export const GridPuzzle = () => {
             </DialogHeader>
             <div className="flex justify-center items-center p-2">
               <div 
-                className="relative border border-BLACK bg-white transform scale-[0.8]"
+                className="relative transform scale-[0.8]"
                 style={{
                   display: 'grid',
                   gridTemplateColumns: `repeat(${horizontal}, 50px)`,
@@ -882,7 +882,7 @@ export const GridPuzzle = () => {
                   row.map((tile, x) => (
                     <div
                       key={`${y}-${x}`}
-                      className="border border-white w-[50px] h-[50px]"
+                      className="w-[50px] h-[50px]"
                       style={{ backgroundColor: 'BLACK' }}
                     >
                       {tile && (
