@@ -895,7 +895,6 @@ export const GridPuzzle = () => {
                               : previewImages.S2[tile.rotation as keyof typeof previewImages.S2]
                           }
                           className="w-full h-full object-cover"
-                          style={{ transform: `rotate(${tile.rotation}deg)` }}
                           alt={`Preview tile ${y}-${x}`}
                         />
                       )}
