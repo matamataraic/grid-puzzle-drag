@@ -65,9 +65,9 @@ export const GridPuzzle = () => {
     },
     S2: {
       0: 'https://i.imgur.com/8yWT36C.jpeg',
-      90: 'https://i.imgur.com/EIyLJGI.jpeg',
+      90: 'https://i.imgur.com/J6oqvsX.jpeg',
       180: 'https://i.imgur.com/pjUV9aV.jpeg',
-      270: 'https://i.imgur.com/J6oqvsX.jpeg'
+      270: 'https://i.imgur.com/EIyLJGI.jpeg'
     }
   });
 
