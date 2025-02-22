@@ -55,11 +55,21 @@ export const GridPuzzle = () => {
     email: '',
   });
   const [showPreview, setShowPreview] = useState(false);
-  const [previewImages] = useState([
-    'https://i.imgur.com/BDxr2FI.jpeg',
-    'https://i.imgur.com/CCh6wA9.jpeg',
-    'https://i.imgur.com/VlHZQdw.jpeg'
-  ]);
+  const [previewImages] = useState({
+    S0: 'https://i.imgur.com/ystbjwm.jpeg',
+    S1: {
+      0: 'https://i.imgur.com/Qz76BKD.jpeg',
+      90: 'https://i.imgur.com/YAxyJGS.jpeg',
+      180: 'https://i.imgur.com/Qz76BKD.jpeg',
+      270: 'https://i.imgur.com/YAxyJGS.jpeg'
+    },
+    S2: {
+      0: 'https://i.imgur.com/8yWT36C.jpeg',
+      90: 'https://i.imgur.com/EIyLJGI.jpeg',
+      180: 'https://i.imgur.com/pjUV9aV.jpeg',
+      270: 'https://i.imgur.com/J6oqvsX.jpeg'
+    }
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -877,7 +887,13 @@ export const GridPuzzle = () => {
                     >
                       {tile && (
                         <img
-                          src={previewImages[tile.imageIndex]}
+                          src={
+                            tile.imageIndex === 0
+                              ? previewImages.S0
+                              : tile.imageIndex === 1
+                              ? previewImages.S1[tile.rotation as keyof typeof previewImages.S1]
+                              : previewImages.S2[tile.rotation as keyof typeof previewImages.S2]
+                          }
                           className="w-full h-full object-cover"
                           style={{ transform: `rotate(${tile.rotation}deg)` }}
                           alt={`Preview tile ${y}-${x}`}
