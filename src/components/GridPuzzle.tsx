@@ -56,18 +56,18 @@ export const GridPuzzle = () => {
   });
   const [showPreview, setShowPreview] = useState(false);
   const [previewImages] = useState({
-    S0: 'https://i.imgur.com/ystbjwm.jpeg',
+    S0: 'https://i.imgur.com/kn42XZf.jpeg',
     S1: {
-      0: 'https://i.imgur.com/Qz76BKD.jpeg',
-      90: 'https://i.imgur.com/YAxyJGS.jpeg',
-      180: 'https://i.imgur.com/Qz76BKD.jpeg',
-      270: 'https://i.imgur.com/YAxyJGS.jpeg'
+      0: 'https://i.imgur.com/1DqOSQE.jpeg',
+      90: 'https://i.imgur.com/PjLVbJo.jpeg',
+      180: 'https://i.imgur.com/1DqOSQE.jpeg',
+      270: 'https://i.imgur.com/PjLVbJo.jpeg'
     },
     S2: {
-      0: 'https://i.imgur.com/8yWT36C.jpeg',
-      90: 'https://i.imgur.com/J6oqvsX.jpeg',
-      180: 'https://i.imgur.com/pjUV9aV.jpeg',
-      270: 'https://i.imgur.com/EIyLJGI.jpeg'
+      0: 'https://i.imgur.com/vE81a6V.jpeg',
+      90: 'https://i.imgur.com/tsLaZSJ.jpeg',
+      180: 'https://i.imgur.com/CC9hB30.jpeg',
+      270: 'https://i.imgur.com/jfTdo1q.jpeg'
     }
   });
 
